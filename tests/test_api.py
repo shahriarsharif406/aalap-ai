@@ -70,6 +70,13 @@ def test_rate_limit(monkeypatch):
     assert client.post("/api/board", json={"text": "x"}).status_code == 429
 
 
-def test_static_index_served():
-    r = client.get("/")
-    assert r.status_code == 200 and "Aalap" in r.text
+def test_landing_and_app_served():
+    assert "Every child has" in client.get("/").text
+    r = client.get("/app.html")
+    assert r.status_code == 200 and 'id="app"' in r.text
+
+
+def test_pictograms_and_manifest_served():
+    assert client.get("/pict/1f35a.svg").status_code == 200
+    m = client.get("/manifest.json").json()
+    assert m["start_url"] == "app.html"

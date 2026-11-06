@@ -2,49 +2,108 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aalap — Every child has something to say</title>
-<meta name="description" content="Aalap builds a personal communication board for children with speech, hearing, vision or intellectual disabilities — from a single photo, in 8 languages.">
-<meta name="theme-color" content="#4b32e8">
-<link rel="manifest" href="manifest.json">
+<meta name="description" content="Aalap turns one photo into a personal communication board for children who are non-speaking, deaf, blind or have an intellectual disability. 8 languages, works offline, private by design.">
+<meta property="og:title" content="Aalap — Every child has something to say">
+<meta property="og:description" content="One photo becomes a personal communication board, in 8 languages.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0e0b24">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
-<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="landing.css">
 </head>
 <body>
-<a class="skip" href="#app">Skip to content</a>
-
-<header class="top">
-  <div class="brand">
-    <img src="icon.svg" alt="" width="44" height="44">
-    <div><b>Aalap</b><small id="tag"></small></div>
-  </div>
-  <label class="langsel">
-    <span class="sr" id="langLbl">Language</span>
-    <select id="langSel" aria-labelledby="langLbl"></select>
-  </label>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <a class="logo" href="index.html"><img src="icon.svg" width="40" height="40" alt=""><b>Aalap</b></a>
+  <nav aria-label="Page">
+    <a href="#how">How it works</a><a href="#modes">Modes</a><a href="#why">Why</a>
+    <a class="cta sm" href="app.html">Open the app</a>
+  </nav>
 </header>
 
-<main id="app" tabindex="-1"></main>
+<main id="main">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">AAC for every family · 8 languages · works offline</p>
+      <h1>Every child has<br><span class="grad">something to say.</span></h1>
+      <p class="lead">Aalap turns <b>one photo</b> into a personal communication board for children who are non-speaking, deaf, blind, or have an intellectual disability — free of the cost and setup that keep these tools out of reach.</p>
+      <div class="actions">
+        <a class="cta" href="app.html">Open the app</a>
+        <a class="ghost" href="https://github.com/shahriarsharif406/aalap-ai">View on GitHub</a>
+      </div>
+      <p class="small">No sign-up. Photos are never stored.</p>
+    </div>
+    <div class="phone" aria-label="Interactive preview">
+      <div class="phone-bar"><span class="dot"></span> Mealtime <span class="chip-s">✨ built from a photo</span></div>
+      <div class="phone-strip" id="demoStrip" aria-live="polite"><span class="ph">Tap a picture…</span></div>
+      <div class="demo-grid" id="demoGrid"></div>
+      <button class="speak" id="demoSpeak" type="button">
+        <img src="pict/1f50a.svg" alt="" width="22" height="22"> Speak
+      </button>
+    </div>
+  </section>
 
-<nav class="tabs" id="tabs" aria-label="Main"></nav>
+  <section class="stats" aria-label="Why this matters">
+    <div><b>240M</b><span>children live with a disability<sup><a href="https://www.unicef.org/philippines/press-releases/worlds-nearly-240-million-children-living-disabilities-are-being-denied-basic-rights" aria-label="Source: UNICEF">1</a></sup></span></div>
+    <div><b>2.5B</b><span>people need assistive products, incl. communication aids<sup><a href="https://www.unicef.org/reports/global-report-assistive-technology" aria-label="Source: WHO and UNICEF">2</a></sup></span></div>
+    <div><b>3%</b><span>of that need is met in the poorest countries<sup><a href="https://www.who.int/health-topics/assistive-technology/improving-access-to-assistive-technology" aria-label="Source: WHO">3</a></sup></span></div>
+  </section>
 
-<button id="sosBtn" class="sos" type="button"></button>
+  <section id="how" class="block">
+    <h2>From photo to voice in seconds</h2>
+    <div class="steps3">
+      <article><span class="n">1</span><img src="pict/1f4f7.svg" alt="" width="64" height="64"><h3>Take a photo</h3><p>Point the camera at the table, classroom or playground. Or just describe the place.</p></article>
+      <article><span class="n">2</span><img src="pict/2728.svg" alt="" width="64" height="64"><h3>Aalap builds the board</h3><p>AI picks the phrases this child is most likely to need <i>right there</i>, in their own language.</p></article>
+      <article><span class="n">3</span><img src="pict/1f5e3.svg" alt="" width="64" height="64"><h3>Tap to speak</h3><p>Pictures become sentences, and the device says them aloud. No reading required.</p></article>
+    </div>
+  </section>
 
-<div id="sosOverlay" class="sos-overlay" hidden role="alertdialog" aria-live="assertive">
-  <div class="sos-big">🆘</div>
-  <div class="sos-say" id="sosSay"></div>
-  <div class="sos-stop" id="sosStop"></div>
-</div>
+  <section id="modes" class="block dark">
+    <h2>One app. Every kind of need.</h2>
+    <p class="sub">Turn on several modes at once — many children have more than one disability.</p>
+    <div class="modes4">
+      <article><img src="pict/1f5e3.svg" alt="" width="56" height="56"><h3>Speech</h3><p>Picture tiles, a sentence strip, type-to-speak with AI suggestions.</p></article>
+      <article><img src="pict/1f442.svg" alt="" width="56" height="56"><h3>Hearing</h3><p>Live captions with picture hints — and a flash + buzz when the child's name is called.</p></article>
+      <article><img src="pict/1f9e9.svg" alt="" width="56" height="56"><h3>Simple</h3><p>Fewer, bigger tiles, gentle praise, and a visual First → Then routine.</p></article>
+      <article><img src="pict/1f441.svg" alt="" width="56" height="56"><h3>Vision</h3><p>High contrast, large UI, "tap once to hear, tap again to choose", spoken navigation.</p></article>
+      <article><img src="pict/1f518.svg" alt="" width="56" height="56"><h3>Switch</h3><p>One-button scanning for children who can't use a touch screen.</p></article>
+    </div>
+  </section>
 
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <section id="why" class="block">
+    <h2>Built for the families the market skips</h2>
+    <ul class="ticks">
+      <li><b>Free of setup labour.</b> Boards are generated, not hand-built by a therapist.</li>
+      <li><b>8 languages, properly.</b> English, বাংলা, हिन्दी, اردو, العربية, Español, Français, 中文 — with right-to-left layouts.</li>
+      <li><b>Offline-first.</b> Installs like an app; boards, routines and voice work without internet.</li>
+      <li><b>Private by design.</b> Photos are used once and never stored. Settings stay on the device.</li>
+      <li><b>Share boards by QR.</b> A parent can hand a board to a teacher in one scan.</li>
+    </ul>
+    <p class="cta-row"><a class="cta" href="app.html">Try Aalap now</a></p>
+  </section>
+</main>
 
-<dialog id="picker" class="picker">
-  <form method="dialog"><button class="x" aria-label="Close">✕</button></form>
-  <div id="pickerGrid" class="grid"></div>
-</dialog>
+<footer>
+  <p><b>Aalap</b> — built for the CTRL-V Hackathon · MIT licensed · by FutureTech.ai</p>
+  <p class="small">Sources: <a href="https://www.unicef.org/philippines/press-releases/worlds-nearly-240-million-children-living-disabilities-are-being-denied-basic-rights">UNICEF, Seen, Counted, Included (2021)</a> · <a href="https://www.unicef.org/reports/global-report-assistive-technology">WHO &amp; UNICEF, Global Report on Assistive Technology (2022)</a> · Pictograms: <a href="https://github.com/jdecked/twemoji">Twemoji</a> (CC-BY 4.0). Aalap is a communication aid, not a medical device.</p>
+</footer>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
+<script>
+(function(){
+  var items=[["1f35a","I want to eat"],["1f4a7","I want water"],["1f34e","I want fruit"],["2795","More"],["1f60b","It is yummy"],["1f3c1","I am finished"]];
+  var grid=document.getElementById("demoGrid"),strip=document.getElementById("demoStrip"),sentence=[];
+  items.forEach(function(it){
+    var b=document.createElement("button");b.type="button";b.className="dtile";
+    b.innerHTML='<img src="pict/'+it[0]+'.svg" alt="" width="52" height="52"><span>'+it[1]+'</span>';
+    b.addEventListener("click",function(){say(it[1]);sentence.push(it);paint();});
+    grid.appendChild(b);
+  });
+  function say(t){try{var u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+  function paint(){strip.innerHTML=sentence.map(function(s){return '<span class="pill"><img src="pict/'+s[0]+'.svg" alt="" width="26" height="26">'+s[1]+'</span>';}).join("");}
+  document.getElementById("demoSpeak").addEventListener("click",function(){if(sentence.length){say(sentence.map(function(s){return s[1];}).join(" "));}});
+})();
+</script>
 </body>
 </html>

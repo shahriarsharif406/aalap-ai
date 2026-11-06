@@ -1,48 +1,54 @@
 # Aalap — *Every child has something to say.*
 
-**Aalap** (আলাপ — "conversation") turns **one photo** into a personal communication board for children who are blind, deaf, non-speaking, or have an intellectual disability. It speaks for the child, captions the world for them, and adapts its whole interface to each child's needs — in **8 languages**.
+**Aalap** (আলাপ — "conversation") turns **one photo** into a personal communication board for children who are non-speaking, deaf, blind, or have an intellectual disability. It speaks for the child, captions the world for them, and adapts its whole interface to each child's needs — in **8 languages**, offline, with no sign-up.
 
 > Built for the **CTRL-V Hackathon** — *Accessibility for people with disabilities.*
 
-## The problem
+## Why this matters
 
-Children who cannot speak rely on AAC (Augmentative & Alternative Communication) boards. Today these are:
-
-* **Expensive** — leading apps cost around US$250 plus therapist time.
-* **Slow to set up** — someone has to hand-build a vocabulary for every place and routine.
-* **Single-need** — most assume one disability, but many children have several at once.
-* **Out of reach** — in much of the world there are almost no speech therapists to build boards at all.
+* About **240 million children** worldwide live with a disability ([UNICEF, 2021](https://www.unicef.org/philippines/press-releases/worlds-nearly-240-million-children-living-disabilities-are-being-denied-basic-rights)).
+* **2.5 billion people** need at least one assistive product — communication aids included — yet access can be as low as **3%** of the need in poorer countries ([WHO & UNICEF, 2022](https://www.unicef.org/reports/global-report-assistive-technology)).
+* Affordability is a major barrier; AAC apps cost hundreds of dollars and need a therapist to hand-build each board.
 
 ## What Aalap does
 
 | Feature | How it helps |
 |---|---|
-| **Photo → board (AI)** | Point the camera at a mealtime, classroom or playground. Gemini Vision builds a board of the phrases the child is most likely to need *in that exact place*, in the child's language. |
-| **Talk** | Tap picture tiles → a sentence strip → the device speaks. A type-to-speak box offers AI phrase suggestions plus the child's own most-used phrases. |
-| **Listen** | Live captions of what people say, with picture hints, adjustable size, and a vibrate + flash alert when the child's **name** is heard. |
-| **Routine** | A visual *First → Then* schedule with big tick buttons and praise, to support predictability. |
-| **SOS** | One always-visible button: loud repeated speech, vibration and a flashing screen. |
-| **Caregiver** | Child profile, custom words, usage insights, export / import, privacy. |
-| **4 combinable support modes** | 🗣️ *Speech* · 👂 *Hearing* · 🧩 *Simple* (fewer, larger tiles, praise) · 👁️ *Vision* (high contrast, larger UI, **tap once to hear, tap again to choose**, screen announcements). Turn on several at once. |
-| **8 languages** | English, বাংলা, हिन्दी, اردو, العربية, Español, Français, 中文 — full UI and vocabulary, with right-to-left layout for Urdu and Arabic. |
-| **Works offline** | Installable PWA. Ready-made boards, routine, voice and settings work with no internet. AI boards need a connection. |
-| **Private** | Photos are used once to build a board and are **never stored**. Settings stay on the device. |
+| **Photo → board (AI)** | Take a photo (live camera or gallery) or describe a place. Gemini builds the phrases the child is most likely to need *there*, in the child's language. |
+| **Talk** | Tap picture tiles → sentence strip → the device speaks. Type-to-speak with AI and personal suggestions. |
+| **For you** | The app learns each child's vocabulary and surfaces their most-used phrases for the time of day. |
+| **Listen** | Live captions with picture hints, adjustable size, and a vibrate + flash alert when the child's **name** is heard. |
+| **Routine** | Visual *First → Then* schedule with big tick buttons and praise. |
+| **SOS** | Always-visible: repeated loud speech, vibration and a flashing screen. |
+| **Share by QR** | Hand a board to a teacher or grandparent with one scan. No account, no server. |
+| **Caregiver** | Child profile, custom words, usage insights, export / import, theme (auto / light / dark). |
+| **5 combinable modes** | 🗣️ *Speech* · 👂 *Hearing* · 🧩 *Simple* (fewer, larger tiles, praise) · 👁️ *Vision* (high contrast, *tap once to hear, tap again to choose*) · 🔘 *Switch* (one-button scanning for motor impairments). |
+| **8 languages** | English, বাংলা, हिन्दी, اردو, العربية, Español, Français, 中文 — full UI and vocabulary, right-to-left for Urdu and Arabic. |
+| **Offline PWA** | Installable. Boards, routines, voice and settings work with no internet. |
+| **Private** | Photos are used once and never stored. Settings stay on the device. |
 
-## How it works
+## Two ways to run the AI
+
+1. **Hosted server** — set `GEMINI_API_KEY` on the backend; everyone gets AI.
+2. **Bring your own key** — with no server key (or on static hosting) a caregiver can paste a free Gemini key under *Caregiver → AI*. It is stored only in that browser and calls Gemini directly. This lets judges try the photo-to-board feature in seconds.
+
+Without any key, every other feature still works.
+
+## Architecture
 
 ```
- phone / browser (PWA, plain JS)                      FastAPI                Gemini
- ┌──────────────────────────────┐   photo (resized)   ┌────────────┐  vision ┌────────┐
- │ Talk · Listen · Routine · SOS │ ─────────────────► │ /api/board │ ──────► │ board  │
- │ Web Speech (TTS + captions)   │ ◄───────────────── │ /api/phrases│ ◄────── │ JSON   │
- │ localStorage + service worker │   JSON tiles        │ /api/tts   │         └────────┘
- └──────────────────────────────┘                      └────────────┘
+ phone / browser (PWA, plain JS, no build step)            FastAPI (optional)         Gemini
+ ┌────────────────────────────────────────────┐  photo   ┌────────────────┐ vision  ┌───────┐
+ │ Talk · Listen · Routine · SOS · Share (QR)  │ ───────► │ /api/board     │ ──────► │ board │
+ │ Web Speech (TTS + captions) · Switch scan   │ ◄─────── │ /api/phrases   │ ◄────── │ JSON  │
+ │ localStorage · service worker (offline)     │  tiles   │ /api/tts       │         └───────┘
+ └────────────────────────────────────────────┘          └────────────────┘
+        └── or direct to Gemini with the caregiver's own key
 ```
 
-* **Frontend** — dependency-free HTML/CSS/JS. Browser speech synthesis and recognition do the talking and captioning, so the core experience costs nothing to run.
-* **Backend** — FastAPI. Structured-JSON prompts to Gemini produce validated, de-duplicated, length-capped tiles. Per-IP rate limiting. No image or text is logged or stored.
-* **Cloud voice fallback** — if a device has no voice for the chosen language (common for Bangla on desktop), `/api/tts` supplies one.
-* **Graceful degradation** — with no API key the server reports `ai: false` and every offline feature still works.
+* **Frontend** — dependency-free HTML/CSS/JS, ~1,300 licensed pictograms bundled for offline use.
+* **Backend** — FastAPI. Structured-JSON prompts, validated / de-duplicated / length-capped tiles, per-IP rate limiting, nothing logged or stored.
+* **Cloud voice fallback** — if the device has no voice for the language (common for Bangla on desktop), `/api/tts` (or the caregiver's key) supplies one.
 
 ## Run it locally
 
@@ -50,37 +56,40 @@ Children who cannot speak rely on AAC (Augmentative & Alternative Communication)
 git clone https://github.com/shahriarsharif406/aalap-ai.git
 cd aalap-ai
 pip install -r requirements.txt
-export GEMINI_API_KEY=your_key      # optional: enables photo→board, phrase suggestions, cloud voice
+export GEMINI_API_KEY=your_key      # optional
 uvicorn backend.main:app --reload
 # open http://localhost:8000
 ```
 
-Get a free key at <https://aistudio.google.com/apikey>. Chrome or Edge gives the best speech recognition.
+Free key: <https://aistudio.google.com/apikey>. Chrome or Edge gives the best speech recognition.
+
+The `web/` folder is fully static — you can also serve it from any static host (GitHub Pages, Netlify, Cloudflare Pages); AI then runs through the caregiver's own key.
 
 ### Tests
 
 ```bash
-pip install pytest
-pytest -q tests
+pip install pytest && pytest -q tests       # API tests
 ```
+
+Front-end behaviour (onboarding, AI flow with a mocked Gemini, QR round-trip, switch scanning, learned board) and an **axe-core WCAG 2.1 AA audit** were run in real Chrome — see [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md).
 
 ### Deploy
 
-* **Render:** connect the repo (a `render.yaml` blueprint is included) and set `GEMINI_API_KEY`.
+* **Render:** connect the repo (`render.yaml` is included) and set `GEMINI_API_KEY`.
 * **Docker:** `docker build -t aalap . && docker run -p 8000:8000 -e GEMINI_API_KEY=... aalap`
 
 ## Judging criteria, mapped
 
-* **Impact** — removes the cost and the setup labour that keep AAC out of reach; multilingual by design, with Bangla and other low-resource languages first-class.
-* **Innovation** — context-aware boards generated from the child's real surroundings, and several disabilities supported in one adaptive interface.
-* **Technical implementation** — structured-output vision pipeline, offline PWA, cloud voice fallback, RTL layout, rate limiting, automated tests.
-* **User experience** — large tap targets, high contrast, screen-reader semantics, reduced-motion support, no reading required.
-* **Presentation** — see [`docs/DEVPOST.md`](docs/DEVPOST.md).
+* **Impact** — removes the cost and setup labour that keep AAC out of reach; multilingual by design, with Bangla, Hindi, Urdu and Arabic first-class.
+* **Innovation** — boards generated from the child's real surroundings; one adaptive app for several disabilities at once; a one-scan way to share boards; vocabulary that learns the child.
+* **Technical implementation** — structured-output vision pipeline, offline PWA, cloud-voice fallback, switch scanning, RTL layout, rate limiting, automated tests and accessibility audit.
+* **User experience** — large targets, picture-first, high-contrast and dark themes, reduced-motion support, screen-reader semantics, no reading required.
+* **Presentation** — landing page at `/`, plus [`docs/DEVPOST.md`](docs/DEVPOST.md).
 
 ## Limitations & roadmap
 
-Aalap is a communication aid, not a medical device or a replacement for a therapist. Next steps: licensed pictogram sets (e.g. ARASAAC) instead of emoji, sign-language video clips, motor-impairment switch scanning, and shared boards between caregivers and teachers.
+Aalap is a communication aid, not a medical device or a replacement for a speech therapist. It has not yet been clinically evaluated; we want to pilot it with special-education teachers and families. Next: clinical pictogram sets (e.g. ARASAAC), sign-language clips, eye-gaze input, and shared boards between caregivers and schools.
 
-## License
+## Credits & license
 
-MIT — © FutureTech.ai
+MIT — © FutureTech.ai. Pictograms: Twemoji (CC-BY 4.0). QR: qrcode-generator (MIT). See [`NOTICE.md`](NOTICE.md).
