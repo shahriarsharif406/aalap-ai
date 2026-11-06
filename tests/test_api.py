@@ -1,0 +1,75 @@
+import base64
+import os
+import sys
+from pathlib import Path
+
+import pytest
+from fastapi.testclient import TestClient
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backend"))
+import main  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def _reset(monkeypatch):
+    main._hits.clear()
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
+
+
+client = TestClient(main.app)
+
+
+def test_health_without_key():
+    r = client.get("/api/health")
+    assert r.status_code == 200 and r.json()["ai"] is False
+
+
+def test_health_with_key(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    assert client.get("/api/health").json()["ai"] is True
+
+
+def test_board_needs_ai():
+    r = client.post("/api/board", json={"text": "kitchen table"})
+    assert r.status_code == 503
+
+
+def test_board_needs_input(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    assert client.post("/api/board", json={}).status_code == 422
+
+
+def test_board_bad_base64(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+    r = client.post("/api/board", json={"image": "not base64!!"})
+    assert r.status_code == 422
+
+
+def test_board_ok_with_mocked_gemini(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "x")
+
+    async def fake(payload, model, key):
+        assert "Bangla" in payload["contents"][0]["parts"][0]["text"]
+        body = '{"title":"খাবার","items":[{"emoji":"🍚","text":"ভাত চাই"},{"emoji":"💧","text":"পানি চাই"},{"emoji":"✋","text":"থামো"},{"emoji":"🍚","text":"ভাত চাই"}]}'
+        return {"candidates": [{"content": {"parts": [{"text": body}]}}]}
+
+    monkeypatch.setattr(main, "gemini", fake)
+    img = base64.b64encode(b"\xff\xd8\xff fake").decode()
+    r = client.post("/api/board", json={"image": img, "lang": "bn", "lang_name": "Bangla"})
+    assert r.status_code == 200
+    data = r.json()
+    assert data["title"] == "খাবার"
+    assert len(data["items"]) == 3  # duplicate removed
+
+
+def test_rate_limit(monkeypatch):
+    monkeypatch.setattr(main, "RATE_LIMIT", 2)
+    for _ in range(2):
+        client.post("/api/board", json={"text": "x"})
+    assert client.post("/api/board", json={"text": "x"}).status_code == 429
+
+
+def test_static_index_served():
+    r = client.get("/")
+    assert r.status_code == 200 and "Aalap" in r.text
