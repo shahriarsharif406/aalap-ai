@@ -93,3 +93,7 @@ Aalap is a communication aid, not a medical device or a replacement for a speech
 ## Credits & license
 
 MIT — © FutureTech.ai. Pictograms: Twemoji (CC-BY 4.0). QR: qrcode-generator (MIT). See [`NOTICE.md`](NOTICE.md).
+
+
+## Interoperability
+Boards can be exported/imported as [Open Board Format](https://www.openboardformat.org/) (`.obf`) files, so they can move to and from other open AAC tools such as Cboard and CoughDrop.

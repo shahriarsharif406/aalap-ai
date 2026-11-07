@@ -348,11 +348,42 @@ function openShare() {
   const url = shareUrl(), dlg = $("#shareDlg");
   let qrHtml = "";
   try { const q = qrcode(0, "L"); q.addData(url); q.make(); qrHtml = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); } catch (e) { qrHtml = ""; }
-  $("#shareBody").innerHTML = `<h2>${pic("🔗")} ${esc(boardName())}</h2><div class="qr">${qrHtml}</div><p class="hint">${esc(t("shareHint"))}</p><div class="row" style="justify-content:center"><button class="btn primary" id="copyLink">${esc(t("copyLink"))}</button></div>`;
+  $("#shareBody").innerHTML = `<h2>${pic("🔗")} ${esc(boardName())}</h2><div class="qr">${qrHtml}</div><p class="hint">${esc(t("shareHint"))}</p><div class="row" style="justify-content:center"><button class="btn primary" id="copyLink">${esc(t("copyLink"))}</button><button class="btn" id="obfBtn" title="Open Board Format">⬇ .obf</button></div>`;
+  $("#obfBtn").addEventListener("click", exportObf);
   $("#copyLink").addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(url); toast(t("copied")); } catch (e) { window.prompt(t("copyLink"), url); }
   });
   if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+}
+/* ---- Open Board Format (openboardformat.org) export / import: interoperable with Cboard, CoughDrop, etc. */
+function boardToObf() {
+  const items = boardItems(), cols = Math.min(4, Math.max(2, items.length)), rows = Math.ceil(items.length / cols);
+  const base = new URL("pict/", location.href).href;
+  const order = []; for (let r = 0; r < rows; r++) order.push(items.slice(r * cols, (r + 1) * cols).map((_, c) => "b" + (r * cols + c)).concat(Array(cols).fill(null)).slice(0, cols));
+  return {
+    format: "open-board-0.1", id: "aalap-" + Date.now(), locale: S.lang, name: boardName(), description_html: "Made with Aalap",
+    license: { type: "CC-BY", copyright_notice_url: "https://creativecommons.org/licenses/by/4.0/", author_name: "Aalap (pictograms: Twemoji)" },
+    grid: { rows, columns: cols, order },
+    buttons: items.map((it, i) => ({ id: "b" + i, label: it.text, vocalization: it.text, image_id: "i" + i })),
+    images: items.map((it, i) => ({ id: "i" + i, url: base + cps(it.emoji) + ".svg", content_type: "image/svg+xml", width: 72, height: 72 })),
+  };
+}
+function exportObf() {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(boardToObf(), null, 2)], { type: "application/json" }));
+  a.download = "aalap-board.obf"; a.click();
+}
+function obfToItems(o) {
+  const img = {}; (o.images || []).forEach((i) => (img[i.id] = i));
+  const fromUrl = (u) => { const m = /\/([0-9a-f-]+)\.svg/i.exec(u || ""); try { return m ? String.fromCodePoint(...m[1].split("-").map((h) => parseInt(h, 16))) : "💬"; } catch (e) { return "💬"; } };
+  return (o.buttons || []).slice(0, 24).map((b) => ({ emoji: fromUrl((img[b.image_id] || {}).url), text: String(b.vocalization || b.label || "").slice(0, 70) })).filter((b) => b.text);
+}
+function importObf(o) {
+  const items = obfToItems(o); if (!items.length) return false;
+  const lang = String(o.locale || "").slice(0, 2); if (LANGS.some((l) => l.code === lang)) S.lang = lang;
+  const id = "ai:" + Date.now();
+  S.boards.push({ id, name: String(o.name || "Board").slice(0, 40), items }); if (S.boards.length > 8) S.boards.shift();
+  S.scene = id; save(); return true;
 }
 function importFromHash() {
   const m = /^#b=([\w-]+)$/.exec(location.hash);
@@ -616,7 +647,7 @@ function viewCare() {
     </div>
     <div class="row">
       <button class="btn" id="expBtn">⬇ ${esc(t("export"))}</button>
-      <label class="btn" for="impIn">⬆ ${esc(t("import"))}</label><input id="impIn" class="sr" type="file" accept="application/json">
+      <label class="btn" for="impIn">⬆ ${esc(t("import"))}</label><input id="impIn" class="sr" type="file" accept="application/json,.json,.obf">
       <button class="btn warn" id="resetBtn">${esc(t("reset"))}</button>
     </div>
     <p class="hint">${pic("🔒")} ${esc(t("privacy"))}</p>
@@ -648,7 +679,7 @@ function bindCare() {
   });
   $("#impIn").addEventListener("change", async (e) => {
     const f = e.target.files[0]; if (!f) return;
-    try { const key = S.apiKey; S = Object.assign({}, DEFAULTS, JSON.parse(await f.text()), { apiKey: key }); S.modes = Object.assign({}, DEFAULTS.modes, S.modes); save(); applyAll(); } catch (err) { toast("⚠️"); }
+    try { const j = JSON.parse(await f.text()); if (j && /^open-board/.test(j.format || "")) { if (importObf(j)) { applyAll(); toast("✓"); } else toast("⚠️"); return; } const key = S.apiKey; S = Object.assign({}, DEFAULTS, j, { apiKey: key }); S.modes = Object.assign({}, DEFAULTS.modes, S.modes); save(); applyAll(); } catch (err) { toast("⚠️"); }
   });
   $("#resetBtn").addEventListener("click", () => { if (confirm("Reset?")) { S = JSON.parse(JSON.stringify(DEFAULTS)); S.onboarded = true; save(); strip = []; applyAll(); } });
 }
