@@ -25,6 +25,7 @@ const DEFAULTS = {
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(KEY) || "{}");
+    if (!s.lang) { const nl = String(navigator.language || "en").slice(0, 2).toLowerCase(); if (LANGS.some((l) => l.code === nl)) s.lang = nl; }
     return Object.assign({}, DEFAULTS, s, { modes: Object.assign({}, DEFAULTS.modes, s.modes || {}) });
   } catch (e) { return JSON.parse(JSON.stringify(DEFAULTS)); }
 }
