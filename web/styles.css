@@ -209,3 +209,16 @@ input[type=range]{width:100%;accent-color:var(--brand)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 h1:focus,h1:focus-visible,.ob-card:focus{outline:none}
+
+/* example photo -> board cards */
+.exs{display:grid;gap:10px;margin:0 0 14px}
+.ex{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line,rgba(127,127,127,.3));border-radius:16px;background:var(--card,transparent);color:inherit;font:inherit;text-align:start;cursor:pointer;min-height:64px}
+.ex b{grid-column:1/-1;font-size:.95rem}
+.ex .ph-img{position:relative;display:grid;place-items:center;width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,rgba(124,92,255,.25),rgba(0,200,180,.25))}
+.ex .ph-img .pic{width:38px;height:38px}
+.ex .ph-img small{position:absolute;inset-inline-end:3px;bottom:2px;font-size:.8rem}
+.ex-arrow{font-size:1.4rem;opacity:.7}
+.ex-tiles{display:flex;gap:6px;flex-wrap:wrap}
+.ex-tiles .pic{width:30px;height:30px}
+[dir=rtl] .ex-arrow{transform:scaleX(-1)}
+.hc .ex .ph-img .pic,.hc .ex-tiles .pic{background:#fff;border-radius:8px;padding:2px}

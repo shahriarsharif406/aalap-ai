@@ -101,6 +101,8 @@ const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "�
 /* key: [en, bn, hi, ur, ar, es, fr, zh] */
 const UI = {
   tag: ["Every child has something to say.", "প্রতিটি শিশুর কিছু বলার আছে।", "हर बच्चे के पास कहने को कुछ है।", "ہر بچے کے پاس کہنے کو کچھ ہے۔", "لكل طفل ما يقوله.", "Todo niño tiene algo que decir.", "Chaque enfant a quelque chose à dire.", "每个孩子都有话要说。"],
+  example: ["See it in action", "কীভাবে কাজ করে দেখুন", "देखें यह कैसे काम करता है", "دیکھیں یہ کیسے کام کرتا ہے", "شاهد كيف يعمل", "Míralo en acción", "Voir en action", "看看效果"],
+  exampleHint: ["Tap a photo: Aalap turns it into a board. (Pre-built examples. With AI on, your own photo does this.)", "একটি ছবিতে ট্যাপ করুন: Aalap সেটিকে বোর্ডে বদলে দেয়। (আগে তৈরি উদাহরণ। AI চালু থাকলে আপনার নিজের ছবিতেও এটি হয়।)", "फ़ोटो पर टैप करें: Aalap उसे बोर्ड में बदल देता है। (पहले से बने उदाहरण। AI चालू होने पर आपकी अपनी फ़ोटो से यही होगा।)", "تصویر پر ٹیپ کریں: Aalap اسے بورڈ میں بدل دیتا ہے۔ (پہلے سے بنی مثالیں۔ AI آن ہو تو آپ کی اپنی تصویر سے یہی ہوگا۔)", "اضغط على صورة: يحوّلها Aalap إلى لوحة. (أمثلة جاهزة. مع تفعيل الذكاء الاصطناعي تفعل صورتك ذلك.)", "Toca una foto: Aalap la convierte en tablero. (Ejemplos prehechos. Con la IA activada, tu propia foto hace esto.)", "Touchez une photo : Aalap la transforme en tableau. (Exemples préparés. Avec l'IA activée, votre propre photo fait cela.)", "点一张照片，Aalap 会把它变成沟通板。（预设示例；开启 AI 后，用你自己的照片即可。）"],
   talk: ["Talk", "কথা বলি", "बोलें", "بولیں", "تحدّث", "Hablar", "Parler", "说话"],
   scene: ["Scene", "দৃশ্য", "दृश्य", "منظر", "المشهد", "Escena", "Scène", "场景"],
   listen: ["Listen", "শুনি", "सुनें", "سنیں", "استمع", "Escuchar", "Écouter", "倾听"],

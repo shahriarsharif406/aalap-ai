@@ -422,8 +422,10 @@ function viewScene() {
        </div>
        <div id="aiResult"></div>`
     : `<div class="card"><p class="hint" style="margin:0">ℹ️ ${esc(t("aiOff"))}<br>${esc(t("aiKeyHint"))}</p></div>`;
+  const ex = [["school", "🏫"], ["health", "🏥"], ["outing", "🚌"]].map(([k, e]) => `<button class="ex" data-ex="${k}" type="button"><span class="ph-img" aria-hidden="true">${pic(e)}<small>📷</small></span><span class="ex-arrow" aria-hidden="true">→</span><span class="ex-tiles" aria-hidden="true">${SCENES[k].slice(0, 4).map((w) => pic(WORDS[w][0])).join("")}</span><b>${esc(t("sc_" + k))}</b></button>`).join("");
   return `<section class="view">
     <h2>${pic("✨")} AI</h2>${ai}
+    <h2>${esc(t("example"))}</h2><p class="hint">${esc(t("exampleHint"))}</p><div class="exs">${ex}</div>
     <h2>${esc(t("presets"))}</h2><div class="scenes">${presets}</div>
   </section>`;
 }
@@ -445,6 +447,12 @@ function downscale(src, max = 1024) {
 function stopCam() { if (camStream) { camStream.getTracks().forEach((x) => x.stop()); camStream = null; } }
 function showShot() { $("#preview").innerHTML = `<img class="shot" src="${pending}" alt="">`; }
 function bindScene() {
+  $$("[data-ex]").forEach((b) => b.addEventListener("click", () => {
+    const k = b.dataset.ex, id = "ai:" + Date.now();
+    S.boards.push({ id, name: t("sc_" + k), items: SCENES[k].map((w) => ({ emoji: WORDS[w][0], text: WORDS[w][1 + li()] || WORDS[w][1] })) });
+    if (S.boards.length > 8) S.boards.shift();
+    S.scene = id; save(); go("talk");
+  }));
   $$("[data-preset]").forEach((b) => b.addEventListener("click", () => { S.scene = b.dataset.preset; save(); go("talk"); }));
   const photo = $("#photoIn");
   if (!photo) return;
