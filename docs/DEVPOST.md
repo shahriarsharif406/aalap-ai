@@ -20,7 +20,7 @@ Designed on standard AAC practice: **core words stay in the same place on every 
 Plus: boards that learn the child's own words, sharing by QR code, export to the open **Open Board Format** (works with Cboard and CoughDrop), SOS, offline use, 8 languages incl. Urdu/Arabic right-to-left.
 
 ### How it's built
-Plain JavaScript PWA + FastAPI + Gemini (vision, structured JSON, TTS). 1,300 bundled pictograms (Twemoji, CC-BY). WCAG 2.1 AA checked with axe-core: 0 violations. Photos are never stored.
+Built during the hackathon (Nov 6–10, 2026), solo. Plain JavaScript PWA + FastAPI + Gemini (vision, structured JSON, TTS). 1,300 bundled pictograms (Twemoji, CC-BY). WCAG 2.1 AA checked with axe-core: 0 violations. Photos are never stored.
 
 ### Why it's different
 Existing open-source AAC tools (Cboard, AsTeRICS Grid, CoughDrop) rely on boards built by hand. Aalap builds the board for the moment the child is in.
@@ -43,3 +43,6 @@ JavaScript, HTML/CSS, Web Speech API, PWA/Service Worker, Python, FastAPI, Gemin
 | 1:20–1:30 | Airplane mode, SOS | "Works offline. 240 million children deserve a voice." |
 
 > Film with a family member or a doll as the "child". Never film a real child without permission.
+
+## Screenshots
+Ready in `docs/screenshots/` (landing, talk board, photo-to-board examples, Bangla, Arabic right-to-left, modes).
