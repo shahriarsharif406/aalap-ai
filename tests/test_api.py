@@ -80,3 +80,52 @@ def test_pictograms_and_manifest_served():
     assert client.get("/pict/1f35a.svg").status_code == 200
     m = client.get("/manifest.json").json()
     assert m["start_url"] == "app.html"
+
+
+def test_gemini_falls_back_to_next_model(monkeypatch):
+    import asyncio
+    import backend.main as m
+
+    calls = []
+
+    class R:
+        def __init__(self, code, body):
+            self.status_code, self._b = code, body
+        def json(self):
+            return self._b
+
+    class C:
+        def __init__(self, *a, **k): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def post(self, url, **k):
+            calls.append(url)
+            if "gemini-2.5-flash:" in url:
+                return R(404, {"error": {"message": "model not found"}})
+            return R(200, {"ok": True})
+
+    monkeypatch.setattr(m.httpx, "AsyncClient", C)
+    out = asyncio.run(m.gemini({}, "gemini-2.5-flash", "k"))
+    assert out == {"ok": True} and len(calls) == 2
+
+
+def test_gemini_error_message_is_reported(monkeypatch):
+    import asyncio
+    import pytest
+    import backend.main as m
+    from fastapi import HTTPException
+
+    class R:
+        status_code = 403
+        def json(self): return {"error": {"message": "API key not valid"}}
+
+    class C:
+        def __init__(self, *a, **k): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def post(self, url, **k): return R()
+
+    monkeypatch.setattr(m.httpx, "AsyncClient", C)
+    with pytest.raises(HTTPException) as e:
+        asyncio.run(m.gemini({}, "gemini-2.5-flash", "k"))
+    assert "403" in e.value.detail and "API key not valid" in e.value.detail

@@ -12,7 +12,9 @@ API reports ai=false and the app keeps working with its built-in boards.
 """
 from __future__ import annotations
 
+import asyncio
 import base64
+import logging
 import io
 import json
 import os
@@ -65,16 +67,36 @@ def require_ai() -> str:
     return key
 
 
+FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"]
+
+
 async def gemini(payload: dict, model: str, key: str) -> dict:
-    url = f"{GEMINI_BASE}/models/{model}:generateContent"
-    try:
-        async with httpx.AsyncClient(timeout=60) as client:
-            r = await client.post(url, headers={"x-goog-api-key": key, "Content-Type": "application/json"}, json=payload)
-    except httpx.HTTPError:
-        raise HTTPException(502, "Could not reach the AI service.")
-    if r.status_code != 200:
-        raise HTTPException(502, f"AI service error ({r.status_code}).")
-    return r.json()
+    """Call Gemini. Retries once on transient errors and falls back to other models if one is unavailable."""
+    models = [model] + [m for m in FALLBACK_MODELS if m != model] if not model.endswith("tts") and "tts" not in model else [model]
+    last = "AI service error."
+    for m in models:
+        url = f"{GEMINI_BASE}/models/{m}:generateContent"
+        for attempt in range(2):
+            try:
+                async with httpx.AsyncClient(timeout=60) as client:
+                    r = await client.post(url, headers={"x-goog-api-key": key, "Content-Type": "application/json"}, json=payload)
+            except httpx.HTTPError:
+                raise HTTPException(502, "Could not reach the AI service.")
+            if r.status_code == 200:
+                return r.json()
+            try:
+                msg = str(r.json().get("error", {}).get("message", ""))[:160]
+            except Exception:
+                msg = ""
+            last = f"AI service error ({r.status_code}): {msg}".strip()
+            logging.warning("gemini %s -> %s %s", m, r.status_code, msg)
+            if r.status_code in (429, 500, 503) and attempt == 0:
+                await asyncio.sleep(1.5)
+                continue
+            break
+        if r.status_code not in (404, 400, 429, 503):
+            break
+    raise HTTPException(502, last)
 
 
 def first_text(data: dict) -> str:
@@ -160,6 +182,7 @@ async def board(req: BoardReq, request: Request):
         "Look at the scene and create a communication board for exactly this place and moment. "
         f"Return {count} tiles. Each tile has one emoji and a short phrase (max 6 words) written in {lang_name}. "
         f"{style} Cover requests, objects that are actually visible, actions, feelings and one safety/help phrase. "
+        "If the photo is unclear or shows nothing specific, make a useful general everyday board instead. "
         "Never include anything unsafe or inappropriate for children. Also return a short board title in the same language."
     )
     if req.text:

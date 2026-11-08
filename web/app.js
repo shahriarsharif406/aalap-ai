@@ -112,7 +112,7 @@ function cleanItems(items, limit) {
 async function aiBoard(body) {
   if (SERVER_AI) {
     const r = await fetch("/api/board", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    if (!r.ok) throw new Error(String(r.status));
+    if (!r.ok) { let d = ""; try { d = (await r.json()).detail || ""; } catch (e) {} throw new Error(r.status + " " + String(d).slice(0, 140)); }
     return r.json();
   }
   const simple = body.modes.includes("intellect"), count = simple ? 8 : 14;
@@ -501,6 +501,8 @@ async function makeBoard() {
     speak(data.title);
   } catch (e) {
     st.textContent = "⚠️ " + t("aiFail");
+    const why = String((e && e.message) || "").trim();
+    if (why) { const sm = document.createElement("small"); sm.style.display = "block"; sm.style.opacity = ".7"; sm.textContent = why; st.appendChild(sm); }
   } finally {
     const b = $("#makeBtn"); if (b) b.disabled = false;
   }
