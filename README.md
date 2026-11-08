@@ -4,6 +4,14 @@
 
 > Built for the **CTRL-V Hackathon** — *Accessibility for people with disabilities.*
 
+## 30-second tour (for judges)
+
+1. Open the app → **Scene** → tap an example photo (works without AI) → a board appears → tap tiles → it speaks.
+2. **Caregiver** → switch language (8, incl. right-to-left) and turn on modes: Hearing, Simple, Vision, Switch.
+3. **Share** a board by QR code, or export it as an open `.obf` file.
+
+The depth is under the hood; the first minute is three taps.
+
 ## Why this matters
 
 * About **240 million children** worldwide live with a disability ([UNICEF, 2021](https://www.unicef.org/philippines/press-releases/worlds-nearly-240-million-children-living-disabilities-are-being-denied-basic-rights)).
