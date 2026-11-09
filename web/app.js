@@ -90,10 +90,17 @@ function toast(msg, praise) {
 
 /* ------------------------------------------------------------------ AI (server first, or the user's own Gemini key) */
 const GEM = "https://generativelanguage.googleapis.com/v1beta/models/";
+const GEM_TEXT = ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-latest", "gemini-2.5-flash"];
+const GEM_TTS = ["gemini-3.1-flash-tts-preview", "gemini-3.8-flash-tts", "gemini-2.5-flash-preview-tts"];
 async function gem(model, payload) {
-  const r = await fetch(GEM + model + ":generateContent", { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": S.apiKey }, body: JSON.stringify(payload) });
-  if (!r.ok) throw new Error("gemini " + r.status);
-  return r.json();
+  let status = 0;
+  for (const m of model === "tts" ? GEM_TTS : GEM_TEXT) {
+    const r = await fetch(GEM + m + ":generateContent", { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": S.apiKey }, body: JSON.stringify(payload) });
+    if (r.ok) return r.json();
+    status = r.status;
+    if (![400, 404, 429, 503].includes(status)) break;
+  }
+  throw new Error("gemini " + status);
 }
 const gemText = (d) => d.candidates[0].content.parts[0].text;
 const parseJson = (s) => JSON.parse(s.trim().replace(/^```(?:json)?|```$/gm, "").trim());
@@ -124,7 +131,7 @@ async function aiBoard(body) {
   const parts = [{ text: prompt }];
   if (body.image) parts.push({ inline_data: { mime_type: body.mime || "image/jpeg", data: body.image } });
   const item = { type: "OBJECT", properties: { emoji: { type: "STRING" }, text: { type: "STRING" } }, required: ["emoji", "text"] };
-  const d = await gem("gemini-2.5-flash", { contents: [{ parts }], generationConfig: { responseMimeType: "application/json", temperature: 0.4, responseSchema: { type: "OBJECT", properties: { title: { type: "STRING" }, items: { type: "ARRAY", items: item } }, required: ["title", "items"] } } });
+  const d = await gem("text", { contents: [{ parts }], generationConfig: { responseMimeType: "application/json", temperature: 0.4, responseSchema: { type: "OBJECT", properties: { title: { type: "STRING" }, items: { type: "ARRAY", items: item } }, required: ["title", "items"] } } });
   const obj = parseJson(gemText(d));
   const items = cleanItems(obj.items, count + 2);
   if (items.length < 3) throw new Error("empty board");
@@ -137,7 +144,7 @@ async function aiPhrases(context) {
     return (await r.json()).phrases || [];
   }
   const prompt = `A child who cannot speak is typing to communicate. They typed: "${context}".\nSuggest 6 short, complete sentences in ${L().en} (max 8 words each) that they most likely want to say. Child-friendly and safe. Return JSON: {"phrases": ["..."]}.`;
-  const d = await gem("gemini-2.5-flash", { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.5, responseSchema: { type: "OBJECT", properties: { phrases: { type: "ARRAY", items: { type: "STRING" } } }, required: ["phrases"] } } });
+  const d = await gem("text", { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.5, responseSchema: { type: "OBJECT", properties: { phrases: { type: "ARRAY", items: { type: "STRING" } } }, required: ["phrases"] } } });
   return (parseJson(gemText(d)).phrases || []).map((p) => String(p).trim().slice(0, 80)).filter(Boolean).slice(0, 6);
 }
 function pcmToWav(b64) {
@@ -154,7 +161,7 @@ async function aiTts(text) {
     if (!r.ok) throw new Error("tts");
     return r.blob();
   }
-  const d = await gem("gemini-2.5-flash-preview-tts", { contents: [{ parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } } });
+  const d = await gem("tts", { contents: [{ parts: [{ text }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } } });
   return pcmToWav(d.candidates[0].content.parts[0].inlineData.data);
 }
 

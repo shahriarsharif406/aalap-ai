@@ -35,8 +35,8 @@ ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
 
 GEMINI_BASE = "https://generativelanguage.googleapis.com/v1beta"
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-TTS_MODEL = os.getenv("GEMINI_TTS_MODEL", "gemini-2.5-flash-preview-tts")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+TTS_MODEL = os.getenv("GEMINI_TTS_MODEL", "gemini-3.1-flash-tts-preview")
 RATE_LIMIT = int(os.getenv("RATE_LIMIT_PER_HOUR", "40"))
 MAX_IMAGE_B64 = 8 * 1024 * 1024  # ~6 MB binary
 
@@ -67,12 +67,14 @@ def require_ai() -> str:
     return key
 
 
-FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-flash-latest", "gemini-2.0-flash"]
+FALLBACK_MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-latest", "gemini-2.5-flash"]
+FALLBACK_TTS = ["gemini-3.8-flash-tts", "gemini-2.5-flash-preview-tts"]
 
 
 async def gemini(payload: dict, model: str, key: str) -> dict:
     """Call Gemini. Retries once on transient errors and falls back to other models if one is unavailable."""
-    models = [model] + [m for m in FALLBACK_MODELS if m != model] if not model.endswith("tts") and "tts" not in model else [model]
+    pool = FALLBACK_TTS if "tts" in model else FALLBACK_MODELS
+    models = [model] + [m for m in pool if m != model]
     last = "AI service error."
     for m in models:
         url = f"{GEMINI_BASE}/models/{m}:generateContent"

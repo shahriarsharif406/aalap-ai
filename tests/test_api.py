@@ -100,12 +100,12 @@ def test_gemini_falls_back_to_next_model(monkeypatch):
         async def __aexit__(self, *a): return False
         async def post(self, url, **k):
             calls.append(url)
-            if "gemini-2.5-flash:" in url:
+            if "gemini-3.8-flash:" in url:
                 return R(404, {"error": {"message": "model not found"}})
             return R(200, {"ok": True})
 
     monkeypatch.setattr(m.httpx, "AsyncClient", C)
-    out = asyncio.run(m.gemini({}, "gemini-2.5-flash", "k"))
+    out = asyncio.run(m.gemini({}, "gemini-3.8-flash", "k"))
     assert out == {"ok": True} and len(calls) == 2
 
 
@@ -127,5 +127,5 @@ def test_gemini_error_message_is_reported(monkeypatch):
 
     monkeypatch.setattr(m.httpx, "AsyncClient", C)
     with pytest.raises(HTTPException) as e:
-        asyncio.run(m.gemini({}, "gemini-2.5-flash", "k"))
+        asyncio.run(m.gemini({}, "gemini-3.8-flash", "k"))
     assert "403" in e.value.detail and "API key not valid" in e.value.detail
