@@ -26,7 +26,7 @@ Built during the hackathon (Nov 6–10, 2026), solo. Plain JavaScript PWA + Fast
 Existing open-source AAC tools (Cboard, AsTeRICS Grid, CoughDrop) rely on boards built by hand. Aalap builds the board for the moment the child is in.
 
 ### Next
-Licensed pictogram sets, sign-language clips, and pilots with special-education schools.
+Licensed pictogram sets, sign-language clips, and pilots with special-education schools. Because Aalap already works offline, it can also serve remote communities whose only link is slow or satellite-based internet; a next step is a lightweight sync mode for such low-bandwidth connections.
 
 ## Technologies
 JavaScript, HTML/CSS, Web Speech API, PWA/Service Worker, Python, FastAPI, Gemini API (vision, structured output, TTS), Open Board Format, qrcode-generator, Twemoji, axe-core, Docker, Render
