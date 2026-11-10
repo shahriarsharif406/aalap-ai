@@ -68,17 +68,45 @@ const WORDS = {
   love: ["❤️", "I love you", "আমি তোমাকে ভালোবাসি", "मैं तुमसे प्यार करता हूँ", "مجھے آپ سے پیار ہے", "أحبك", "Te quiero", "Je t'aime", "我爱你"],
   sorry: ["🙇", "I am sorry", "আমি দুঃখিত", "मुझे माफ़ करना", "معاف کیجیے", "أنا آسف", "Lo siento", "Désolé", "对不起"],
   hello: ["👋", "Hello", "হ্যালো", "नमस्ते", "السلام علیکم", "مرحبا", "Hola", "Bonjour", "你好"],
+  morning: ["🌅", "Good morning", "শুভ সকাল", "सुप्रभात", "صبح بخیر", "صباح الخير", "Buenos días", "Bonjour", "早上好"],
+  night: ["🌙", "Good night", "শুভ রাত্রি", "शुभ रात्रि", "شب بخیر", "تصبح على خير", "Buenas noches", "Bonne nuit", "晚安"],
+  breakfast: ["🍳", "I want breakfast", "আমি সকালের নাস্তা চাই", "मुझे नाश्ता चाहिए", "مجھے ناشتہ چاہیے", "أريد فطورا", "Quiero desayunar", "Je veux le petit-déjeuner", "我想吃早饭"],
+  dinner: ["🍲", "I want dinner", "আমি রাতের খাবার চাই", "मुझे रात का खाना चाहिए", "مجھے رات کا کھانا چاہیے", "أريد عشاء", "Quiero cenar", "Je veux dîner", "我想吃晚饭"],
+  tea: ["🍵", "I want tea", "আমি চা চাই", "मुझे चाय चाहिए", "مجھے چائے چاہیے", "أريد شايا", "Quiero té", "Je veux du thé", "我想喝茶"],
+  cold: ["🥶", "I am cold", "আমার শীত লাগছে", "मुझे ठंड लग रही है", "مجھے سردی لگ رہی ہے", "أشعر بالبرد", "Tengo frío", "J'ai froid", "我冷"],
+  blanket: ["🛌", "I want a blanket", "আমি কম্বল চাই", "मुझे कंबल चाहिए", "مجھے کمبل چاہیے", "أريد بطانية", "Quiero una manta", "Je veux une couverture", "我要毯子"],
+  lightoff: ["🌑", "Turn off the light", "বাতি নিভিয়ে দাও", "बत्ती बंद करो", "بتی بند کریں", "أطفئ الضوء", "Apaga la luz", "Éteins la lumière", "请关灯"],
+  hug: ["🤗", "I want a hug", "আমাকে জড়িয়ে ধরো", "मुझे गले लगाओ", "مجھے گلے لگائیں", "أريد عناقا", "Quiero un abrazo", "Je veux un câlin", "我想要抱抱"],
+  medtime: ["🕐", "It is time for my medicine", "আমার ওষুধ খাওয়ার সময় হয়েছে", "मेरी दवा का समय हो गया है", "میری دوا کا وقت ہو گیا ہے", "حان وقت دوائي", "Es hora de mi medicina", "C'est l'heure de mon médicament", "该吃药了"],
+  nomed: ["🚫", "I do not want this medicine", "আমি এই ওষুধ খেতে চাই না", "मुझे यह दवा नहीं लेनी", "مجھے یہ دوا نہیں لینی", "لا أريد هذا الدواء", "No quiero esta medicina", "Je ne veux pas ce médicament", "我不想吃这个药"],
+  sick: ["🤮", "I feel sick", "আমার বমি বমি লাগছে", "मुझे उल्टी जैसा लग रहा है", "مجھے متلی ہو رہی ہے", "أشعر بالغثيان", "Tengo ganas de vomitar", "J'ai envie de vomir", "我想吐"],
+  fever: ["🤒", "I have a fever", "আমার জ্বর", "मुझे बुखार है", "مجھے بخار ہے", "عندي حمى", "Tengo fiebre", "J'ai de la fièvre", "我发烧了"],
+  buy: ["🛒", "I want to buy this", "আমি এটা কিনতে চাই", "मुझे यह खरीदना है", "مجھے یہ خریدنا ہے", "أريد شراء هذا", "Quiero comprar esto", "Je veux acheter ça", "我想买这个"],
+  howmuch: ["💰", "How much is it?", "এটার দাম কত?", "इसकी कीमत कितनी है?", "اس کی قیمت کیا ہے؟", "بكم هذا؟", "¿Cuánto cuesta?", "Combien ça coûte ?", "这个多少钱？"],
+  bus: ["🚌", "I want to take the bus", "আমি বাসে যেতে চাই", "मुझे बस से जाना है", "مجھے بس میں جانا ہے", "أريد ركوب الحافلة", "Quiero tomar el autobús", "Je veux prendre le bus", "我想坐公交车"],
+  car: ["🚗", "Let us go by car", "চলো গাড়িতে যাই", "चलो गाड़ी से चलें", "چلو گاڑی میں چلیں", "هيا نذهب بالسيارة", "Vamos en coche", "Allons en voiture", "我们坐车去吧"],
+  rain: ["🌧️", "It is raining", "বৃষ্টি হচ্ছে", "बारिश हो रही है", "بارش ہو رہی ہے", "السماء تمطر", "Está lloviendo", "Il pleut", "下雨了"],
+  sun: ["☀️", "It is sunny", "রোদ উঠেছে", "धूप निकली है", "دھوپ نکلی ہے", "الجو مشمس", "Hace sol", "Il y a du soleil", "出太阳了"],
+  mom: ["👩", "I want my mom", "আমি মাকে চাই", "मुझे माँ चाहिए", "مجھے امی چاہئیں", "أريد أمي", "Quiero a mi mamá", "Je veux ma maman", "我要妈妈"],
+  dad: ["👨", "I want my dad", "আমি বাবাকে চাই", "मुझे पापा चाहिए", "مجھے ابو چاہییں", "أريد أبي", "Quiero a mi papá", "Je veux mon papa", "我要爸爸"],
+  tv: ["📺", "I want to watch TV", "আমি টিভি দেখতে চাই", "मुझे टीवी देखना है", "مجھے ٹی وی دیکھنا ہے", "أريد مشاهدة التلفاز", "Quiero ver la tele", "Je veux regarder la télé", "我想看电视"],
+  phone: ["📱", "I want the phone", "আমি ফোন চাই", "मुझे फ़ोन चाहिए", "مجھے فون چاہیے", "أريد الهاتف", "Quiero el teléfono", "Je veux le téléphone", "我要手机"],
+  callfam: ["📞", "Call my family", "আমার পরিবারকে ফোন করো", "मेरे परिवार को फ़ोन करो", "میرے گھر والوں کو فون کریں", "اتصل بأهلي", "Llama a mi familia", "Appelle ma famille", "请给我家人打电话"],
+  ambulance: ["🚑", "Call an ambulance", "অ্যাম্বুলেন্স ডাকো", "एम्बुलेंस बुलाओ", "ایمبولینس بلائیں", "اطلب الإسعاف", "Llama a una ambulancia", "Appelle une ambulance", "请叫救护车"],
+  police: ["🚓", "Call the police", "পুলিশ ডাকো", "पुलिस को बुलाओ", "پولیس کو بلائیں", "اطلب الشرطة", "Llama a la policía", "Appelle la police", "请报警"],
+  breathe: ["😰", "I cannot breathe", "আমি শ্বাস নিতে পারছি না", "मुझे साँस नहीं आ रही", "مجھے سانس نہیں آ رہی", "لا أستطيع التنفس", "No puedo respirar", "Je ne peux pas respirer", "我喘不过气"],
+  lost: ["🧭", "I am lost", "আমি পথ হারিয়ে ফেলেছি", "मैं रास्ता भूल गया हूँ", "میں راستہ بھول گیا ہوں", "أنا تائه", "Estoy perdido", "Je suis perdu", "我迷路了"],
   goodbye: ["🖐️", "Goodbye", "বিদায়", "अलविदा", "خدا حافظ", "وداعا", "Adiós", "Au revoir", "再见"],
 };
 
 const CORE = ["yes", "no", "help", "more", "stop", "done"];
 
 const GROUPS = {
-  food: ["eat", "water", "milk", "fruit", "yummy", "hot"],
-  feel: ["happy", "sad", "angry", "scared", "tired", "love", "sorry", "like", "dislike"],
-  health: ["hurt", "head", "tummy", "dizzy", "medicine", "doctor"],
-  act: ["play", "draw", "music", "ball", "read", "again", "wash", "bath", "brush", "clothes", "sleep", "toilet", "home", "outside"],
-  social: ["hello", "goodbye", "thanks", "please", "friend", "myturn", "yourturn", "understand", "notunderstand", "repeat", "break", "wait", "look", "hold"],
+  food: ["eat", "water", "milk", "fruit", "yummy", "hot", "breakfast", "dinner", "tea"],
+  feel: ["happy", "sad", "angry", "scared", "tired", "love", "sorry", "like", "dislike", "cold", "hug"],
+  health: ["hurt", "head", "tummy", "dizzy", "medicine", "doctor", "medtime", "nomed", "sick", "fever", "breathe", "ambulance", "police"],
+  act: ["play", "draw", "music", "ball", "read", "again", "wash", "bath", "brush", "clothes", "sleep", "toilet", "home", "outside", "blanket", "lightoff", "tv", "phone", "buy", "bus", "car", "rain", "sun"],
+  social: ["hello", "goodbye", "thanks", "please", "friend", "myturn", "yourturn", "understand", "notunderstand", "repeat", "break", "wait", "look", "hold", "morning", "night", "howmuch", "mom", "dad", "callfam", "lost"],
 };
 function groupOf(id) {
   if (CORE.includes(id)) return "core";
@@ -95,8 +123,16 @@ const SCENES = {
   outing: ["home", "outside", "wait", "look", "hold", "scared", "tired", "water", "toilet", "hello", "goodbye"],
   feelings: ["happy", "sad", "angry", "scared", "tired", "love", "sorry", "like", "dislike", "hold"],
   social: ["hello", "goodbye", "thanks", "please", "sorry", "friend", "love", "happy"],
+  morning: ["morning", "toilet", "wash", "brush", "bath", "clothes", "breakfast", "tea", "water", "please"],
+  bedtime: ["night", "sleep", "tired", "lightoff", "blanket", "hug", "cold", "hot", "read", "love"],
+  medicine: ["medtime", "medicine", "nomed", "water", "hurt", "sick", "fever", "doctor", "thanks"],
+  home: ["mom", "dad", "hug", "eat", "tv", "phone", "play", "tea", "dinner", "love"],
+  shopping: ["buy", "howmuch", "look", "more", "yes", "no", "wait", "please", "thanks", "hold"],
+  travel: ["bus", "car", "home", "wait", "toilet", "water", "scared", "tired", "lost", "callfam"],
+  weather: ["rain", "sun", "cold", "hot", "outside", "home", "tired", "water"],
+  emergency: ["help", "ambulance", "police", "breathe", "hurt", "lost", "callfam", "doctor", "scared", "stop"],
 };
-const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋" };
+const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋", morning: "🌅", bedtime: "🌙", medicine: "💊", home: "🏠", shopping: "🛒", travel: "🚗", weather: "🌦️", emergency: "🚨" };
 
 /* key: [en, bn, hi, ur, ar, es, fr, zh] */
 const UI = {
@@ -168,6 +204,14 @@ const UI = {
   sc_outing: ["Outing", "বাইরে যাওয়া", "बाहर जाना", "باہر جانا", "الخروج", "Salida", "Sortie", "外出"],
   sc_feelings: ["Feelings", "অনুভূতি", "भावनाएँ", "احساسات", "المشاعر", "Emociones", "Émotions", "心情"],
   sc_social: ["Greetings", "শুভেচ্ছা", "अभिवादन", "سلام دعا", "التحيات", "Saludos", "Salutations", "问候"],
+  sc_morning: ["Morning", "সকাল", "सुबह", "صبح", "الصباح", "Mañana", "Matin", "早晨"],
+  sc_bedtime: ["Bedtime", "ঘুমের সময়", "सोने का समय", "سونے کا وقت", "وقت النوم", "Hora de dormir", "Coucher", "睡觉"],
+  sc_medicine: ["Medicine", "ওষুধ", "दवा", "دوا", "الدواء", "Medicina", "Médicament", "吃药"],
+  sc_home: ["At home", "বাড়িতে", "घर पर", "گھر پر", "في البيت", "En casa", "À la maison", "在家"],
+  sc_shopping: ["Shopping", "কেনাকাটা", "खरीदारी", "خریداری", "التسوق", "Compras", "Courses", "购物"],
+  sc_travel: ["Travel", "যাতায়াত", "यात्रा", "سفر", "السفر", "Viaje", "Voyage", "出行"],
+  sc_weather: ["Weather", "আবহাওয়া", "मौसम", "موسم", "الطقس", "Clima", "Météo", "天气"],
+  sc_emergency: ["Emergency", "জরুরি", "आपातकाल", "ہنگامی", "الطوارئ", "Emergencia", "Urgence", "紧急"],
   ob1: ["Choose your language", "আপনার ভাষা বাছুন", "अपनी भाषा चुनें", "اپنی زبان منتخب کریں", "اختر لغتك", "Elige tu idioma", "Choisissez votre langue", "选择你的语言"],
   ob2: ["Who is Aalap for?", "আলাপ কার জন্য?", "आलाप किसके लिए है?", "آلاپ کس کے لیے ہے؟", "لمن هذا التطبيق؟", "¿Para quién es Aalap?", "Pour qui est Aalap ?", "Aalap 为谁而用？"],
   ob3: ["You are ready!", "আপনি প্রস্তুত!", "आप तैयार हैं!", "آپ تیار ہیں!", "أنت جاهز!", "¡Todo listo!", "Vous êtes prêt !", "准备好了！"],
