@@ -124,9 +124,9 @@ async function aiBoard(body) {
   }
   const simple = body.modes.includes("intellect"), count = simple ? 8 : 14;
   const style = simple ? "Use only very simple, concrete words a young child with an intellectual disability can understand." : "Use short, natural first-person phrases a child would really say.";
-  let prompt = "You help non-speaking children with disabilities communicate (AAC). Look at the scene and create a communication board for exactly this place and moment. " +
+  let prompt = "You help non-speaking children with disabilities communicate (AAC). Look at the photo and create a communication board for exactly this place and moment. The photo may be ordinary, plain, dark, blurry or show only a table, a cover, a wall, furniture or a few objects: never refuse and never ask for a better photo. Describe what you can see, imagine the child is in that place, and build a useful board anyway. " +
     `Return ${count} tiles. Each tile has one emoji and a short phrase (max 6 words) written in ${body.lang_name}. ${style} ` +
-    "Cover requests, objects that are actually visible, actions, feelings and one safety/help phrase. Never include anything unsafe or inappropriate for children. Also return a short board title in the same language.";
+    "Always include the everyday basics a child needs anywhere (yes, no, help, hungry, thirsty, toilet, tired, hurt, happy, sad) mixed with phrases about what is actually visible. Cover requests, actions, feelings and one safety/help phrase. Never include anything unsafe or inappropriate for children. Also return a short board title in the same language.";
   if (body.text) prompt += "\nCaregiver description of the place: " + body.text;
   const parts = [{ text: prompt }];
   if (body.image) parts.push({ inline_data: { mime_type: body.mime || "image/jpeg", data: body.image } });
@@ -437,13 +437,13 @@ function viewScene() {
     <h2>${esc(t("presets"))}</h2><div class="scenes">${presets}</div>
   </section>`;
 }
-function downscale(src, max = 1024) {
+function downscale(src, max = 768) {
   return new Promise((resolve, reject) => {
     const draw = (img, w, h) => {
       const k = Math.min(1, max / Math.max(w, h)), c = document.createElement("canvas");
       c.width = Math.round(w * k); c.height = Math.round(h * k);
       c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-      resolve(c.toDataURL("image/jpeg", 0.82));
+      resolve(c.toDataURL("image/jpeg", 0.72));
     };
     if (src instanceof HTMLVideoElement) return draw(src, src.videoWidth, src.videoHeight);
     const img = new Image(), url = URL.createObjectURL(src);

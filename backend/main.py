@@ -201,10 +201,12 @@ async def board(req: BoardReq, request: Request):
     )
     prompt = (
         "You help non-speaking children with disabilities communicate (AAC). "
-        "Look at the scene and create a communication board for exactly this place and moment. "
+        "Look at the photo and create a communication board for exactly this place and moment. "
+        "The photo may be ordinary, plain, dark, blurry or show only a table, a cover, a wall, furniture or a few objects: never refuse and never ask for a better photo. "
+        "Describe what you can see, imagine the child is in that place, and build a useful board anyway. "
         f"Return {count} tiles. Each tile has one emoji and a short phrase (max 6 words) written in {lang_name}. "
         f"{style} Cover requests, objects that are actually visible, actions, feelings and one safety/help phrase. "
-        "If the photo is unclear or shows nothing specific, make a useful general everyday board instead. "
+        "Always include the everyday basics a child needs anywhere (yes, no, help, hungry, thirsty, toilet, tired, hurt, happy, sad) mixed with phrases about what is actually visible. "
         "Never include anything unsafe or inappropriate for children. Also return a short board title in the same language."
     )
     if req.text:
@@ -243,6 +245,17 @@ async def board(req: BoardReq, request: Request):
     )
     obj = parse_json(first_text(data))
     items = clean_items(obj.get("items") if isinstance(obj, dict) else None, count + 2)
+    if len(items) < 3 and req.image:
+        data = await gemini(
+            {
+                "contents": [{"parts": [{"text": prompt + "\nNo usable photo is available: make a general everyday board."}]}],
+                "generationConfig": {"responseMimeType": "application/json", "responseSchema": schema, "temperature": 0.4},
+            },
+            MODEL,
+            key,
+        )
+        obj = parse_json(first_text(data))
+        items = clean_items(obj.get("items") if isinstance(obj, dict) else None, count + 2)
     if len(items) < 3:
         raise HTTPException(502, "The AI could not build a board from this input. Try another photo.")
     title = str(obj.get("title", "")).strip()[:40] or items[0]["text"]
