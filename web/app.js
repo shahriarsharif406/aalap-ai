@@ -212,14 +212,13 @@ function sceneChips() {
   Object.keys(SCENES).forEach((k) => chips.push({ id: k, label: `${pic(SCENE_EMOJI[k])} ${esc(t("sc_" + k))}` }));
   S.boards.forEach((b) => chips.push({ id: b.id, label: `${pic("✨")} ${esc(b.name)}` }));
   if (S.custom.length) chips.push({ id: "mine", label: `${pic("⭐")} ${esc(t("myWords"))}` });
-  return chips.map((c) => `<button class="chip" data-scene="${esc(c.id)}" aria-pressed="${S.scene === c.id}">${c.label}</button>`).join("") +
-    `<button class="chip" id="shareBtn" type="button">${pic("🔗")} ${esc(t("share"))}</button>`;
+  return chips.map((c) => `<button class="chip" data-scene="${esc(c.id)}" aria-pressed="${S.scene === c.id}">${c.label}</button>`).join("");
 }
 function viewTalk() {
   tiles = [];
   const hint = S.modes.visual ? `<p class="hint" role="note">${pic("🔊")} ${esc(t("vHint"))}</p>` : "";
   return `<section class="view">
-    <div class="chips" role="group">${sceneChips()}</div>
+    <div class="chiprow"><div class="chips" role="group">${sceneChips()}</div><button class="chip sharechip" id="shareBtn" type="button" aria-label="${esc(t("share"))}">${pic("🔗")} ${esc(t("share"))}</button></div>
     <div class="strip">
       <div class="strip-items" id="stripItems" aria-live="polite"></div>
       <div class="strip-actions">
@@ -261,6 +260,7 @@ function bindTalk() {
   $$(".tile").forEach((b) => b.addEventListener("click", () => onTile(tiles[+b.dataset.i], b)));
   $$("[data-scene]").forEach((b) => b.addEventListener("click", () => { S.scene = b.dataset.scene; save(); render(); }));
   $("#shareBtn").addEventListener("click", openShare);
+  try { const on = $('.chips [aria-pressed="true"]'); if (on) on.scrollIntoView({ inline: "center", block: "nearest" }); } catch (e) { /* ignore */ }
   $("#speakAll").addEventListener("click", () => {
     if (!strip.length) return;
     speak(strip.map((i) => i.text).join(joiner()));
