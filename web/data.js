@@ -144,6 +144,7 @@ const UI = {
   mVisual: ["Vision", "দৃষ্টি", "दृष्टि", "بصارت", "البصر", "Visión", "Vue", "视觉"],
   lang: ["Language", "ভাষা", "भाषा", "زبان", "اللغة", "Idioma", "Langue", "语言"],
   speed: ["Voice speed", "কণ্ঠের গতি", "आवाज़ की गति", "آواز کی رفتار", "سرعة الصوت", "Velocidad de voz", "Vitesse de la voix", "语速"],
+  calm: ["Calm mode (soft colours, no animation)", "শান্ত মোড (নরম রং, কোনো অ্যানিমেশন নয়)", "शांत मोड (नरम रंग, कोई एनिमेशन नहीं)", "پرسکون موڈ (نرم رنگ، کوئی حرکت نہیں)", "الوضع الهادئ (ألوان ناعمة، بلا حركة)", "Modo tranquilo (colores suaves, sin animaciones)", "Mode calme (couleurs douces, sans animation)", "安静模式（柔和色彩，无动画）"],
   contrast: ["High contrast", "হাই কনট্রাস্ট", "हाई कंट्रास्ट", "ہائی کنٹراسٹ", "تباين عال", "Alto contraste", "Contraste élevé", "高对比度"],
   size: ["Button size", "বাটনের আকার", "बटन का आकार", "بٹن کا سائز", "حجم الأزرار", "Tamaño de botones", "Taille des boutons", "按钮大小"],
   nameAlert: ["Alert me when my name is heard", "আমার নাম শুনলে সতর্ক করো", "मेरा नाम सुनने पर अलर्ट करें", "میرا نام سنائی دے تو الرٹ کریں", "نبّهني عند سماع اسمي", "Avisar al oír mi nombre", "Alerte si mon nom est entendu", "听到我的名字时提醒我"],

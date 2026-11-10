@@ -18,7 +18,7 @@ const KEY = "aalap.v1";
 const DEFAULTS = {
   lang: "en", name: "", onboarded: false, theme: "auto",
   modes: { speech: true, hearing: false, intellect: false, visual: false, switch: false },
-  speed: 1, contrast: false, size: 1, alertName: true, scanMs: 1500, apiKey: "",
+  speed: 1, contrast: false, calm: true, size: 1, alertName: true, scanMs: 1500, apiKey: "",
   custom: [], usage: {}, seen: {}, boards: [], scene: "meal",
   routine: ["brush", "eat", "play", "bath", "sleep"], done: {},
 };
@@ -646,6 +646,7 @@ function viewCare() {
       <div class="field"><label for="speedIn">${esc(t("speed"))}</label><input id="speedIn" type="range" min="0.5" max="1.5" step="0.1" value="${S.speed}"></div>
       <div class="field"><label for="sizeIn">${esc(t("size"))}</label><input id="sizeIn" type="range" min="0.8" max="1.5" step="0.1" value="${S.size}"></div>
       ${m.switch ? `<div class="field"><label for="scanIn">${esc(t("scanSpeed"))}</label><input id="scanIn" type="range" min="700" max="3500" step="100" value="${S.scanMs}" style="direction:ltr"></div>` : ""}
+      <label class="toggle"><input id="calmIn" type="checkbox" ${S.calm ? "checked" : ""}> ${esc(t("calm"))}</label>
       <label class="toggle"><input id="hcIn" type="checkbox" ${S.contrast ? "checked" : ""}> ${esc(t("contrast"))}</label>
       <label class="toggle"><input id="alertIn" type="checkbox" ${S.alertName ? "checked" : ""}> ${esc(t("nameAlert"))}</label>
       <div class="field"><span class="lbl">${esc(t("theme"))}</span>${seg("theme", [["auto", t("themeAuto")], ["light", t("themeLight")], ["dark", t("themeDark")]])}</div>
@@ -681,6 +682,7 @@ function bindCare() {
   $("#speedIn").addEventListener("change", () => speak(S.name || t("praise")));
   $("#sizeIn").addEventListener("input", (e) => { S.size = +e.target.value; save(); applySettings(); });
   const scan = $("#scanIn"); if (scan) scan.addEventListener("input", (e) => { S.scanMs = +e.target.value; save(); });
+  $("#calmIn").addEventListener("change", (e) => { S.calm = e.target.checked; save(); applySettings(); });
   $("#hcIn").addEventListener("change", (e) => { S.contrast = e.target.checked; save(); applySettings(); });
   $("#alertIn").addEventListener("change", (e) => { S.alertName = e.target.checked; save(); });
   $("#keyIn").addEventListener("change", (e) => { S.apiKey = e.target.value.trim(); save(); render(); });
@@ -774,6 +776,7 @@ function applySettings() {
   const root = document.documentElement, visual = S.modes.visual;
   applyTheme();
   root.classList.toggle("hc", S.contrast || visual);
+  root.classList.toggle("calm", !!S.calm);
   root.classList.toggle("m-intellect", S.modes.intellect);
   root.classList.toggle("m-visual", visual);
   root.style.setProperty("--scale", String(visual ? Math.max(S.size, 1.2) : S.size));

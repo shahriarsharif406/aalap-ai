@@ -222,3 +222,16 @@ h1:focus,h1:focus-visible,.ob-card:focus{outline:none}
 .ex-tiles .pic{width:30px;height:30px}
 [dir=rtl] .ex-arrow{transform:scaleX(-1)}
 .hc .ex .ph-img .pic,.hc .ex-tiles .pic{background:#fff;border-radius:8px;padding:2px}
+
+/* Calm mode (default): soft colours, no motion, no flashing - gentler for sensory-sensitive children */
+:root.calm{--bg:#f3f1f8;--soft:#ebe8f5;--line:#e0dcee;--brand:#6a5fc4;--brand-d:#4d44a6;--brand-2:#8a80d6;--coral:#e6937c;--tile:calc(148px * var(--scale));
+  --shadow:0 1px 3px rgba(70,60,120,.06),0 6px 18px -8px rgba(70,60,120,.14)}
+:root.calm.dark{--bg:#15132a;--bg2:#1b1836;--card:#1e1b3b;--soft:#26224a;--line:#2f2a58;--brand:#9a90e6;--brand-d:#b3abf0}
+.calm body{background:var(--bg)}
+.calm *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+.calm .spinner{animation:spin 1.8s linear infinite!important}
+.calm .tile{filter:saturate(.72);border-bottom-width:4px;border-radius:26px}
+.calm .btn,.calm .chip,.calm .scene-card,.calm .tabs button{font-weight:700}
+.calm .brand img{box-shadow:none}
+.calm.hc .tile{filter:none}
+.calm #sosBtn{background:#c64b61;box-shadow:0 4px 14px -6px rgba(120,30,50,.35)}
