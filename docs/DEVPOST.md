@@ -13,13 +13,13 @@
 **Take a photo. Get a board. Tap to speak.**
 A photo of a meal table gives "I want water", "more", "too hot". A classroom gives "I need a break". Gemini Vision builds the board in the child's language, and the phone speaks it.
 
-One app, five combinable modes: **Speech · Hearing** (live captions) **· Simple** (fewer, bigger tiles) **· Vision** (tap once to hear, again to choose) **· Switch** (one-button scanning).
+One app, five combinable modes: **Speech · Hearing** (live captions in Chrome) **· Simple** (fewer, bigger tiles) **· Vision** (tap once to hear, again to choose) **· Switch** (one-button scanning).
 
 Beyond needs, it gives children their feelings and dreams: 18 ready scenes cover daily life (morning, medicine, emergency) and the heart — "Mom, cuddle me", "I want to join in", "I have dreams too", "Treat me like everyone else". Children are not only patients; they want to take part and grow up.
 
 Designed on standard AAC practice: **core words stay in the same place on every board**, so a child builds motor memory (the approach used by Proloquo2Go and other leading AAC apps).
 
-Plus: boards that learn the child's own words, sharing by QR code, export to the open **Open Board Format** (works with Cboard and CoughDrop), SOS, offline use, 8 languages incl. Urdu/Arabic right-to-left.
+Plus: boards that learn the child's own words, sharing by QR code, export to the open **Open Board Format** (works with Cboard and CoughDrop), SOS, 8 languages incl. Urdu/Arabic right-to-left, and ready-made boards that work offline (the photo-to-board step needs internet).
 
 ### How it's built
 Built during the hackathon (Nov 6–10, 2026), solo. Plain JavaScript PWA + FastAPI + Gemini (vision, structured JSON, TTS). 1,300 bundled pictograms (Twemoji, CC-BY). WCAG 2.1 AA checked with axe-core: 0 violations. Photos are never stored.
