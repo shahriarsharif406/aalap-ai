@@ -96,6 +96,17 @@ const WORDS = {
   police: ["🚓", "Call the police", "পুলিশ ডাকো", "पुलिस को बुलाओ", "پولیس کو بلائیں", "اطلب الشرطة", "Llama a la policía", "Appelle la police", "请报警"],
   breathe: ["😰", "I cannot breathe", "আমি শ্বাস নিতে পারছি না", "मुझे साँस नहीं आ रही", "مجھے سانس نہیں آ رہی", "لا أستطيع التنفس", "No puedo respirar", "Je ne peux pas respirer", "我喘不过气"],
   lost: ["🧭", "I am lost", "আমি পথ হারিয়ে ফেলেছি", "मैं रास्ता भूल गया हूँ", "میں راستہ بھول گیا ہوں", "أنا تائه", "Estoy perdido", "Je suis perdu", "我迷路了"],
+  momcuddle: ["🤱", "Mom, cuddle me", "মা, আমাকে আদর করো", "माँ, मुझे प्यार करो", "امی، مجھے پیار کریں", "أمي، احضنيني", "Mamá, mímame", "Maman, fais-moi un câlin", "妈妈，抱抱我"],
+  dadcuddle: ["🧔", "Dad, cuddle me", "বাবা, আমাকে আদর করো", "पापा, मुझे प्यार करो", "ابو، مجھے پیار کریں", "أبي، احضنّي", "Papá, mímame", "Papa, fais-moi un câlin", "爸爸，抱抱我"],
+  momnear: ["👩", "Mom, come close to me", "মা, আমার কাছে এসো", "माँ, मेरे पास आओ", "امی، میرے پاس آئیں", "أمي، اقتربي مني", "Mamá, ven a mi lado", "Maman, viens près de moi", "妈妈，请到我身边来"],
+  dadnear: ["👨", "Dad, come close to me", "বাবা, আমার কাছে এসো", "पापा, मेरे पास आओ", "ابو، میرے پاس آئیں", "أبي، اقترب مني", "Papá, ven a mi lado", "Papa, viens près de moi", "爸爸，请到我身边来"],
+  missmom: ["💭", "I miss my mom", "আমার মায়ের কথা মনে পড়ছে", "मुझे माँ की याद आ रही है", "مجھے امی کی یاد آ رہی ہے", "أشتاق إلى أمي", "Extraño a mi mamá", "Maman me manque", "我想妈妈了"],
+  missdad: ["💭", "I miss my dad", "আমার বাবার কথা মনে পড়ছে", "मुझे पापा की याद आ रही है", "مجھے ابو کی یاد آ رہی ہے", "أشتاق إلى أبي", "Extraño a mi papá", "Papa me manque", "我想爸爸了"],
+  stay: ["🫂", "Stay with me", "আমার সাথে থাকো", "मेरे साथ रहो", "میرے ساتھ رہیں", "ابق معي", "Quédate conmigo", "Reste avec moi", "请陪着我"],
+  dontleave: ["🥺", "Please do not leave me", "আমাকে ছেড়ে যেও না", "मुझे छोड़कर मत जाओ", "مجھے چھوڑ کر مت جائیں", "لا تتركني", "No me dejes", "Ne me laisse pas", "请不要离开我"],
+  lonely: ["😔", "I feel lonely", "আমার একা লাগছে", "मुझे अकेलापन लग रहा है", "مجھے تنہائی محسوس ہو رہی ہے", "أشعر بالوحدة", "Me siento solo", "Je me sens seul", "我觉得孤单"],
+  lap: ["🧸", "I want to sit on your lap", "আমি তোমার কোলে বসতে চাই", "मुझे तुम्हारी गोद में बैठना है", "مجھے آپ کی گود میں بیٹھنا ہے", "أريد الجلوس في حضنك", "Quiero sentarme en tu regazo", "Je veux m'asseoir sur tes genoux", "我想坐在你腿上"],
+  kiss: ["😘", "Give me a kiss", "আমাকে চুমু দাও", "मुझे एक पप्पी दो", "مجھے بوسہ دیں", "قبّلني", "Dame un beso", "Fais-moi un bisou", "亲亲我"],
   goodbye: ["🖐️", "Goodbye", "বিদায়", "अलविदा", "خدا حافظ", "وداعا", "Adiós", "Au revoir", "再见"],
 };
 
@@ -103,7 +114,7 @@ const CORE = ["yes", "no", "help", "more", "stop", "done"];
 
 const GROUPS = {
   food: ["eat", "water", "milk", "fruit", "yummy", "hot", "breakfast", "dinner", "tea"],
-  feel: ["happy", "sad", "angry", "scared", "tired", "love", "sorry", "like", "dislike", "cold", "hug"],
+  feel: ["happy", "sad", "angry", "scared", "tired", "love", "sorry", "like", "dislike", "cold", "hug", "momcuddle", "dadcuddle", "momnear", "dadnear", "missmom", "missdad", "stay", "dontleave", "lonely", "lap", "kiss"],
   health: ["hurt", "head", "tummy", "dizzy", "medicine", "doctor", "medtime", "nomed", "sick", "fever", "breathe", "ambulance", "police"],
   act: ["play", "draw", "music", "ball", "read", "again", "wash", "bath", "brush", "clothes", "sleep", "toilet", "home", "outside", "blanket", "lightoff", "tv", "phone", "buy", "bus", "car", "rain", "sun"],
   social: ["hello", "goodbye", "thanks", "please", "friend", "myturn", "yourturn", "understand", "notunderstand", "repeat", "break", "wait", "look", "hold", "morning", "night", "howmuch", "mom", "dad", "callfam", "lost"],
@@ -130,9 +141,10 @@ const SCENES = {
   shopping: ["buy", "howmuch", "look", "more", "yes", "no", "wait", "please", "thanks", "hold"],
   travel: ["bus", "car", "home", "wait", "toilet", "water", "scared", "tired", "lost", "callfam"],
   weather: ["rain", "sun", "cold", "hot", "outside", "home", "tired", "water"],
+  comfort: ["momcuddle", "dadcuddle", "momnear", "dadnear", "hug", "lap", "kiss", "stay", "dontleave", "lonely", "missmom", "missdad", "love"],
   emergency: ["help", "ambulance", "police", "breathe", "hurt", "lost", "callfam", "doctor", "scared", "stop"],
 };
-const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋", morning: "🌅", bedtime: "🌙", medicine: "💊", home: "🏠", shopping: "🛒", travel: "🚗", weather: "🌦️", emergency: "🚨" };
+const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋", morning: "🌅", bedtime: "🌙", medicine: "💊", home: "🏠", shopping: "🛒", travel: "🚗", weather: "🌦️", emergency: "🚨", comfort: "💞" };
 
 /* key: [en, bn, hi, ur, ar, es, fr, zh] */
 const UI = {
@@ -211,6 +223,7 @@ const UI = {
   sc_shopping: ["Shopping", "কেনাকাটা", "खरीदारी", "خریداری", "التسوق", "Compras", "Courses", "购物"],
   sc_travel: ["Travel", "যাতায়াত", "यात्रा", "سفر", "السفر", "Viaje", "Voyage", "出行"],
   sc_weather: ["Weather", "আবহাওয়া", "मौसम", "موسم", "الطقس", "Clima", "Météo", "天气"],
+  sc_comfort: ["Love & comfort", "ভালোবাসা ও আদর", "प्यार और अपनापन", "پیار اور سہارا", "الحب والحنان", "Cariño y consuelo", "Tendresse et réconfort", "爱与陪伴"],
   sc_emergency: ["Emergency", "জরুরি", "आपातकाल", "ہنگامی", "الطوارئ", "Emergencia", "Urgence", "紧急"],
   ob1: ["Choose your language", "আপনার ভাষা বাছুন", "अपनी भाषा चुनें", "اپنی زبان منتخب کریں", "اختر لغتك", "Elige tu idioma", "Choisissez votre langue", "选择你的语言"],
   ob2: ["Who is Aalap for?", "আলাপ কার জন্য?", "आलाप किसके लिए है?", "آلاپ کس کے لیے ہے؟", "لمن هذا التطبيق؟", "¿Para quién es Aalap?", "Pour qui est Aalap ?", "Aalap 为谁而用？"],
