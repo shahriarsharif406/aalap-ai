@@ -129,3 +129,25 @@ def test_gemini_error_message_is_reported(monkeypatch):
     with pytest.raises(HTTPException) as e:
         asyncio.run(m.gemini({}, "gemini-3.8-flash", "k"))
     assert "403" in e.value.detail and "API key not valid" in e.value.detail
+
+
+def test_gemini_network_error_tries_next_model_and_names_the_error(monkeypatch):
+    import asyncio
+    import pytest
+    import backend.main as m
+    from fastapi import HTTPException
+
+    seen = []
+
+    class C:
+        def __init__(self, *a, **k): pass
+        async def __aenter__(self): return self
+        async def __aexit__(self, *a): return False
+        async def post(self, url, **k):
+            seen.append(url)
+            raise m.httpx.ReadTimeout("slow")
+
+    monkeypatch.setattr(m.httpx, "AsyncClient", C)
+    with pytest.raises(HTTPException) as e:
+        asyncio.run(m.gemini({}, "gemini-3.8-flash", "k"))
+    assert "ReadTimeout" in e.value.detail and len(seen) == 5

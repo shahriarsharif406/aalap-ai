@@ -69,21 +69,44 @@ def require_ai() -> str:
 
 FALLBACK_MODELS = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-latest", "gemini-2.5-flash"]
 FALLBACK_TTS = ["gemini-3.8-flash-tts", "gemini-2.5-flash-preview-tts"]
+BUDGET_SECONDS = 85  # stay below the host's request timeout
+
+
+def _with_thinking(payload: dict, model: str, on: bool) -> dict:
+    """Ask for minimal 'thinking' on text models so answers return quickly."""
+    if not on or "tts" in model:
+        return payload
+    cfg = dict(payload.get("generationConfig") or {})
+    if model.startswith("gemini-3"):
+        cfg["thinkingConfig"] = {"thinkingLevel": "low"}
+    elif "2.5-flash" in model:
+        cfg["thinkingConfig"] = {"thinkingBudget": 0}
+    return {**payload, "generationConfig": cfg}
 
 
 async def gemini(payload: dict, model: str, key: str) -> dict:
-    """Call Gemini. Retries once on transient errors and falls back to other models if one is unavailable."""
+    """Call Gemini with a time budget: tries the model, then fallbacks; retries transient errors."""
     pool = FALLBACK_TTS if "tts" in model else FALLBACK_MODELS
     models = [model] + [m for m in pool if m != model]
+    started = time.monotonic()
     last = "AI service error."
     for m in models:
         url = f"{GEMINI_BASE}/models/{m}:generateContent"
-        for attempt in range(2):
+        for think in (True, False):
+            remaining = BUDGET_SECONDS - (time.monotonic() - started)
+            if remaining < 5:
+                raise HTTPException(502, last)
             try:
-                async with httpx.AsyncClient(timeout=60) as client:
-                    r = await client.post(url, headers={"x-goog-api-key": key, "Content-Type": "application/json"}, json=payload)
-            except httpx.HTTPError:
-                raise HTTPException(502, "Could not reach the AI service.")
+                async with httpx.AsyncClient(timeout=min(40, remaining)) as client:
+                    r = await client.post(
+                        url,
+                        headers={"x-goog-api-key": key, "Content-Type": "application/json"},
+                        json=_with_thinking(payload, m, think),
+                    )
+            except httpx.HTTPError as e:
+                last = f"Could not reach the AI service ({type(e).__name__})."
+                logging.warning("gemini %s -> %s", m, type(e).__name__)
+                break  # try the next model
             if r.status_code == 200:
                 return r.json()
             try:
@@ -92,11 +115,8 @@ async def gemini(payload: dict, model: str, key: str) -> dict:
                 msg = ""
             last = f"AI service error ({r.status_code}): {msg}".strip()
             logging.warning("gemini %s -> %s %s", m, r.status_code, msg)
-            if r.status_code in (429, 500, 503) and attempt == 0:
-                await asyncio.sleep(1.5)
-                continue
-            break
-        if r.status_code not in (404, 400, 429, 503):
+            if r.status_code == 400 and think:
+                continue  # maybe the thinking option is not accepted; retry without it
             break
     raise HTTPException(502, last)
 

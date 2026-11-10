@@ -422,7 +422,8 @@ function viewScene() {
            ${canCam ? `<button class="btn primary" id="camBtn" type="button">${pic("📷")} ${esc(t("camera"))}</button><button class="btn primary" id="snapBtn" type="button" hidden>${pic("📸")} ${esc(t("snap"))}</button>` : ""}
            <label class="btn" for="photoIn">🖼️ ${esc(t("gallery"))}</label>
          </div>
-         <input id="photoIn" class="sr" type="file" accept="image/*" capture="environment">
+         <input id="photoIn" class="sr" type="file" accept="image/*">
+         ${canCam ? "" : `<label class="btn primary" for="photoCam">${pic("📷")} ${esc(t("camera"))}</label><input id="photoCam" class="sr" type="file" accept="image/*" capture="environment">`}
          <textarea id="descIn" placeholder="${esc(t("describe"))}" aria-label="${esc(t("describe"))}"></textarea>
          <button class="btn primary" id="makeBtn">${pic("✨")} ${esc(t("make"))}</button>
          <div id="aiStatus" role="status"></div>
@@ -461,13 +462,13 @@ function bindScene() {
     S.scene = id; save(); go("talk");
   }));
   $$("[data-preset]").forEach((b) => b.addEventListener("click", () => { S.scene = b.dataset.preset; save(); go("talk"); }));
-  const photo = $("#photoIn");
-  if (!photo) return;
-  photo.addEventListener("change", async () => {
+  const photos = $$("#photoIn,#photoCam");
+  if (!photos.length) return;
+  photos.forEach((photo) => photo.addEventListener("change", async () => {
     const f = photo.files && photo.files[0];
     if (!f) return;
     try { stopCam(); const v = $("#cam"); v.hidden = true; pending = await downscale(f); showShot(); } catch (e) { toast(t("aiFail")); }
-  });
+  }));
   const camBtn = $("#camBtn");
   if (camBtn) {
     camBtn.addEventListener("click", async () => {
