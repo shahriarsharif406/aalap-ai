@@ -15,6 +15,8 @@ A photo of a meal table gives "I want water", "more", "too hot". A classroom giv
 
 One app, five combinable modes: **Speech · Hearing** (live captions) **· Simple** (fewer, bigger tiles) **· Vision** (tap once to hear, again to choose) **· Switch** (one-button scanning).
 
+Beyond needs, it gives children their feelings and dreams: 18 ready scenes cover daily life (morning, medicine, emergency) and the heart — "Mom, cuddle me", "I want to join in", "I have dreams too", "Treat me like everyone else". Children are not only patients; they want to take part and grow up.
+
 Designed on standard AAC practice: **core words stay in the same place on every board**, so a child builds motor memory (the approach used by Proloquo2Go and other leading AAC apps).
 
 Plus: boards that learn the child's own words, sharing by QR code, export to the open **Open Board Format** (works with Cboard and CoughDrop), SOS, offline use, 8 languages incl. Urdu/Arabic right-to-left.

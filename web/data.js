@@ -107,6 +107,18 @@ const WORDS = {
   lonely: ["😔", "I feel lonely", "আমার একা লাগছে", "मुझे अकेलापन लग रहा है", "مجھے تنہائی محسوس ہو رہی ہے", "أشعر بالوحدة", "Me siento solo", "Je me sens seul", "我觉得孤单"],
   lap: ["🧸", "I want to sit on your lap", "আমি তোমার কোলে বসতে চাই", "मुझे तुम्हारी गोद में बैठना है", "مجھے آپ کی گود میں بیٹھنا ہے", "أريد الجلوس في حضنك", "Quiero sentarme en tu regazo", "Je veux m'asseoir sur tes genoux", "我想坐在你腿上"],
   kiss: ["😘", "Give me a kiss", "আমাকে চুমু দাও", "मुझे एक पप्पी दो", "مجھے بوسہ دیں", "قبّلني", "Dame un beso", "Fais-moi un bisou", "亲亲我"],
+  join: ["🙌", "I want to join in", "আমিও সবার সাথে যোগ দিতে চাই", "मैं भी सबके साथ शामिल होना चाहता हूँ", "میں بھی سب کے ساتھ شامل ہونا چاہتا ہوں", "أريد أن أشارك معكم", "Quiero participar yo también", "Je veux participer moi aussi", "我也想加入"],
+  withothers: ["🎈", "I want to play with the others", "আমি সবার সাথে খেলতে চাই", "मुझे सबके साथ खेलना है", "مجھے سب کے ساتھ کھیلنا ہے", "أريد أن ألعب مع الآخرين", "Quiero jugar con los demás", "Je veux jouer avec les autres", "我想和大家一起玩"],
+  same: ["🌈", "Treat me like everyone else", "আমাকে সবার মতোই দেখো", "मुझे सबके जैसा ही समझो", "مجھے سب کی طرح سمجھیں", "عاملني مثل الجميع", "Trátame como a todos", "Traite-moi comme les autres", "请像对待大家一样对待我"],
+  tryit: ["💪", "Let me try", "আমাকে চেষ্টা করতে দাও", "मुझे कोशिश करने दो", "مجھے کوشش کرنے دیں", "دعني أحاول", "Déjame intentarlo", "Laisse-moi essayer", "让我试试"],
+  canido: ["🌟", "I can do it", "আমি পারব", "मैं कर सकता हूँ", "میں کر سکتا ہوں", "أستطيع أن أفعلها", "Yo puedo", "Je peux le faire", "我能行"],
+  believe: ["💙", "Believe in me", "আমার উপর বিশ্বাস রাখো", "मुझ पर भरोसा रखो", "مجھ پر بھروسا رکھیں", "ثق بي", "Confía en mí", "Fais-moi confiance", "请相信我"],
+  learn: ["🎓", "I want to learn", "আমি শিখতে চাই", "मुझे सीखना है", "مجھے سیکھنا ہے", "أريد أن أتعلم", "Quiero aprender", "Je veux apprendre", "我想学习"],
+  gotoschool: ["🏫", "I want to go to school", "আমি স্কুলে যেতে চাই", "मुझे स्कूल जाना है", "مجھے اسکول جانا ہے", "أريد الذهاب إلى المدرسة", "Quiero ir a la escuela", "Je veux aller à l'école", "我想上学"],
+  grow: ["🌱", "I want to grow up and achieve something", "আমি বড় হয়ে কিছু একটা হতে চাই", "मैं बड़ा होकर कुछ बनना चाहता हूँ", "میں بڑا ہو کر کچھ بننا چاہتا ہوں", "أريد أن أكبر وأحقق شيئا", "Quiero crecer y lograr algo", "Je veux grandir et réussir", "我长大后想有所成就"],
+  dream: ["⭐", "I have dreams too", "আমারও স্বপ্ন আছে", "मेरे भी सपने हैं", "میرے بھی خواب ہیں", "لدي أحلام أيضا", "Yo también tengo sueños", "J'ai aussi des rêves", "我也有梦想"],
+  listenme: ["👂", "Please listen to me", "আমার কথা শোনো", "मेरी बात सुनो", "میری بات سنیں", "استمع إليّ", "Escúchame", "Écoute-moi", "请听我说"],
+  proud: ["🏅", "I am proud of myself", "আমি নিজেকে নিয়ে গর্বিত", "मुझे खुद पर गर्व है", "مجھے خود پر فخر ہے", "أنا فخور بنفسي", "Estoy orgulloso de mí", "Je suis fier de moi", "我为自己骄傲"],
   goodbye: ["🖐️", "Goodbye", "বিদায়", "अलविदा", "خدا حافظ", "وداعا", "Adiós", "Au revoir", "再见"],
 };
 
@@ -141,10 +153,11 @@ const SCENES = {
   shopping: ["buy", "howmuch", "look", "more", "yes", "no", "wait", "please", "thanks", "hold"],
   travel: ["bus", "car", "home", "wait", "toilet", "water", "scared", "tired", "lost", "callfam"],
   weather: ["rain", "sun", "cold", "hot", "outside", "home", "tired", "water"],
+  dreams: ["join", "withothers", "same", "tryit", "canido", "believe", "learn", "gotoschool", "grow", "dream", "listenme", "proud"],
   comfort: ["momcuddle", "dadcuddle", "momnear", "dadnear", "hug", "lap", "kiss", "stay", "dontleave", "lonely", "missmom", "missdad", "love"],
   emergency: ["help", "ambulance", "police", "breathe", "hurt", "lost", "callfam", "doctor", "scared", "stop"],
 };
-const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋", morning: "🌅", bedtime: "🌙", medicine: "💊", home: "🏠", shopping: "🛒", travel: "🚗", weather: "🌦️", emergency: "🚨", comfort: "💞" };
+const SCENE_EMOJI = { meal: "🍽️", school: "🎒", play: "🧸", hygiene: "🧼", health: "🩺", outing: "🚌", feelings: "💛", social: "👋", morning: "🌅", bedtime: "🌙", medicine: "💊", home: "🏠", shopping: "🛒", travel: "🚗", weather: "🌦️", emergency: "🚨", comfort: "💞", dreams: "⭐" };
 
 /* key: [en, bn, hi, ur, ar, es, fr, zh] */
 const UI = {
@@ -223,6 +236,7 @@ const UI = {
   sc_shopping: ["Shopping", "কেনাকাটা", "खरीदारी", "خریداری", "التسوق", "Compras", "Courses", "购物"],
   sc_travel: ["Travel", "যাতায়াত", "यात्रा", "سفر", "السفر", "Viaje", "Voyage", "出行"],
   sc_weather: ["Weather", "আবহাওয়া", "मौसम", "موسم", "الطقس", "Clima", "Météo", "天气"],
+  sc_dreams: ["My dreams", "আমার স্বপ্ন", "मेरे सपने", "میرے خواب", "أحلامي", "Mis sueños", "Mes rêves", "我的梦想"],
   sc_comfort: ["Love & comfort", "ভালোবাসা ও আদর", "प्यार और अपनापन", "پیار اور سہارا", "الحب والحنان", "Cariño y consuelo", "Tendresse et réconfort", "爱与陪伴"],
   sc_emergency: ["Emergency", "জরুরি", "आपातकाल", "ہنگامی", "الطوارئ", "Emergencia", "Urgence", "紧急"],
   ob1: ["Choose your language", "আপনার ভাষা বাছুন", "अपनी भाषा चुनें", "اپنی زبان منتخب کریں", "اختر لغتك", "Elige tu idioma", "Choisissez votre langue", "选择你的语言"],
