@@ -235,3 +235,7 @@ h1:focus,h1:focus-visible,.ob-card:focus{outline:none}
 .calm .brand img{box-shadow:none}
 .calm.hc .tile{filter:none}
 .calm #sosBtn{background:#c64b61;box-shadow:0 4px 14px -6px rgba(120,30,50,.35)}
+
+.stt-status{min-height:1.4em;margin:6px 2px 10px;font-weight:700;color:var(--brand)}
+.stt-status.bad{color:#b3261e}
+.hc .stt-status{color:#ffe600}

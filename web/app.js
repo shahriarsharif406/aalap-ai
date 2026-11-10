@@ -537,6 +537,7 @@ function viewListen() {
       <button class="btn small" id="capPlus" aria-label="${esc(t("textSize"))} +">A+</button>
       <button class="btn small warn" id="capClear">${esc(t("clear"))}</button>
     </div>
+    <p class="stt-status" id="sttStatus" role="status" aria-live="polite"></p>
     <div class="caps" id="caps" aria-live="polite" style="--capsize:${capSize}rem"></div>
   </section>`;
 }
@@ -559,12 +560,13 @@ function addLine(text) {
   }
   paintCaps();
 }
-function toggleStt() {
-  if (sttOn) { sttOn = false; try { rec.stop(); } catch (e) { /* already stopped */ } paintListenBtn(); return; }
+function sttStatus(msg, bad) { const e = $("#sttStatus"); if (e) { e.textContent = msg || ""; e.classList.toggle("bad", !!bad); } }
+function startRec(lang) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { toast(t("noStt")); return; }
   rec = new SR();
-  rec.lang = L().tts; rec.continuous = true; rec.interimResults = true;
+  rec.lang = lang; rec.continuous = true; rec.interimResults = true;
+  let fell = false;
+  rec.onstart = () => sttStatus(t("sttOn"));
   rec.onresult = (e) => {
     let interim = "";
     for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -573,11 +575,25 @@ function toggleStt() {
     }
     paintCaps(interim);
   };
-  rec.onend = () => { if (sttOn) { try { rec.start(); } catch (e) { /* busy */ } } };
-  rec.onerror = (ev) => { if (ev.error === "not-allowed" || ev.error === "service-not-allowed") { sttOn = false; paintListenBtn(); toast("🎤 ✕"); } };
+  rec.onerror = (ev) => {
+    const err = ev.error;
+    if (err === "no-speech" || err === "aborted") return; /* normal: keep listening */
+    if (err === "language-not-supported" && lang !== "en-US") { fell = true; sttStatus(t("sttLang"), true); rec.onend = null; try { rec.stop(); } catch (x) { /* ignore */ } startRec("en-US"); return; }
+    sttOn = false; paintListenBtn();
+    const msg = err === "not-allowed" || err === "service-not-allowed" ? t("sttMic") : err === "network" ? t("sttNet") : err === "audio-capture" ? t("sttNoMic") : t("noStt") + " (" + err + ")";
+    sttStatus(msg, true);
+  };
+  rec.onend = () => { if (sttOn && !fell) { try { rec.start(); } catch (e) { /* busy */ } } };
   sttOn = true;
-  try { rec.start(); } catch (e) { sttOn = false; }
+  try { rec.start(); } catch (e) { sttOn = false; sttStatus(t("noStt") + " (" + e.name + ")", true); }
   paintListenBtn();
+}
+function toggleStt() {
+  if (sttOn) { sttOn = false; try { rec.stop(); } catch (e) { /* already stopped */ } paintListenBtn(); sttStatus(""); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { sttStatus(t("noStt"), true); return; }
+  sttStatus("");
+  startRec(L().tts);
 }
 function bindListen() {
   paintListenBtn(); paintCaps();
